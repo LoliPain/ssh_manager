@@ -3,7 +3,7 @@ from json import load
 from typing import List
 
 from .store_path import store_path
-from ..connection import Connection
+from connection import Connection
 
 
 def read_whole_store() -> list:

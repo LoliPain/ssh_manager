@@ -3,8 +3,8 @@ import os
 
 from simple_term_menu import TerminalMenu
 
-from .connection import Connection
-from .stored import proceed_stored
+from connection import Connection
+from stored import proceed_stored
 
 
 def one_time_selection() -> Connection:
