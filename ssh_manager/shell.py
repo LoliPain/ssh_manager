@@ -51,6 +51,8 @@ def open_ssh():
     :return: No.
     """
     connection = one_time_selection()
+    if not connection:
+        return
     if os.environ.get("TMUX"):
         os.system(f"tmux rename-window '{connection.remote_user}@{connection.hostname}'")
     os.system(connection.sshpass())
