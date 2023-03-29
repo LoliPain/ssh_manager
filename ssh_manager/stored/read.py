@@ -2,8 +2,8 @@ import os.path
 from json import load
 from typing import List
 
+from .store_path import store_path
 from ..connection import Connection
-from.store_path import store_path
 
 
 def read_whole_store() -> list:

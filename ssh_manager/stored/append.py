@@ -1,7 +1,8 @@
-from ..connection import Connection
 from json import dumps
+
 from .read import read_whole_store
 from .store_path import store_path
+from ..connection import Connection
 
 
 def append_to_stored(connection: Connection):
