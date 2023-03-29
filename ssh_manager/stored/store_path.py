@@ -1,3 +1,3 @@
 from pathlib import Path
 
-store_path = f'{Path(__file__).resolve()}/cxs.json'
+store_path = f'{Path(__file__).parent.resolve()}/cxs.json'
