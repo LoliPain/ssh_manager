@@ -1,7 +1,8 @@
 from simple_term_menu import TerminalMenu
 import argparse
-from stored import proceed_stored
-from connection import Connection
+import os
+from .stored import proceed_stored
+from .connection import Connection
 
 
 def one_time_selection() -> Connection:
@@ -25,3 +26,12 @@ def parse_mode() -> argparse.Namespace:
         action='store_true'
     )
     return parser.parse_args()
+
+
+def open_ssh():
+    connection = one_time_selection()
+    if os.environ.get("TMUX"):
+        os.system(f"tmux rename-window '{connection.remote_user}@{connection.hostname}'")
+    os.system(connection.sshpass())
+    if os.environ.get("TMUX"):
+        os.system("kill -9 %d" % (os.getppid()))  # Dirty hack from Foo Bah to close tty after ssh ends

@@ -1,4 +1,4 @@
-from connection import Connection
+from ..connection import Connection
 from json import dumps
 from .read import read_whole_store
 
