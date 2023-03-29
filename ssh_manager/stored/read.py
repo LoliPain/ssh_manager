@@ -1,13 +1,17 @@
+import os.path
 from json import load
 from typing import List
 
 from ..connection import Connection
+from.store_path import store_path
 
 
 def read_whole_store() -> list:
-    with open('stored/cx.json', 'r') as f:
-        loaded: List[dict] = load(f)
-    return loaded
+    if os.path.exists(store_path):
+        with open(store_path, 'r') as f:
+            loaded: List[dict] = load(f)
+        return loaded
+    return []
 
 
 def proceed_stored() -> list:
