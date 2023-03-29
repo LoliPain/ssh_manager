@@ -8,11 +8,19 @@ from .stored import proceed_stored
 
 
 def one_time_selection() -> Connection:
+    """Start an interactive selection
+
+    :return: Selected connection instance
+    """
     store = proceed_stored()
     return store[TerminalMenu([str(_) for _ in store]).show()]
 
 
 def new_stored_entry() -> Connection:
+    """Step-by-step creating new stored info
+
+    :return: Recently created connection instance
+    """
     return Connection(
         hostname=input("Hostname (eg. google.com): "),
         remote_user=input("Remote user: "),
@@ -21,6 +29,11 @@ def new_stored_entry() -> Connection:
 
 
 def parse_mode() -> argparse.Namespace:
+    """Parse launch arguments
+    Should be called before routing and pass arguments to it
+
+    :return: Parsed arguments `Namespace`
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-n',
@@ -31,6 +44,12 @@ def parse_mode() -> argparse.Namespace:
 
 
 def open_ssh():
+    """Start an SSH connection
+    Checks whenever runs inside TMUX session, then renames active tmux window to user@host
+    Also terminates tty on ssh disconnect while in TMUX
+
+    :return: No.
+    """
     connection = one_time_selection()
     if os.environ.get("TMUX"):
         os.system(f"tmux rename-window '{connection.remote_user}@{connection.hostname}'")

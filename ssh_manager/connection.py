@@ -1,4 +1,7 @@
 class Connection:
+    """Basic stored connection
+
+    """
     hostname: str
     remote_user: str
     named_passwd: str
@@ -9,14 +12,29 @@ class Connection:
             remote_user: str,
             named_passwd: str
     ):
+        """Create a new stored connection
+
+        :param hostname: Remote hostname or IP
+        :param remote_user: User on remote machine
+        :param named_passwd: First part of env var password that declares a shortened hostname
+                            (eg *chkitty* for $chkitty_sweety)
+        """
         self.hostname = hostname
         self.remote_user = remote_user
         self.named_passwd = named_passwd
 
     def sshpass(self) -> str:
+        """Returns a sshpass prepared action
+
+        :return: sshpass -p passwd ssh user@host
+        """
         return f"sshpass -p ${self.named_passwd}_{self.remote_user} ssh {self.remote_user}@{self.hostname}"
 
     def to_json(self) -> dict:
+        """Prepare instance for JSON dumping
+
+        :return: JSON-compitable dict
+        """
         return {
             "hostname": self.hostname,
             "remote_user": self.remote_user,
@@ -24,4 +42,8 @@ class Connection:
         }
 
     def __str__(self) -> str:
+        """User-readable entry
+
+        :return: user@host
+        """
         return f"{self.remote_user}@{self.hostname}"
