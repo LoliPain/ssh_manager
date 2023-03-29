@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 
 from simple_term_menu import TerminalMenu
 
@@ -13,7 +14,10 @@ def one_time_selection() -> Connection:
     :return: Selected connection instance
     """
     store = proceed_stored()
-    return store[TerminalMenu([str(_) for _ in store]).show()]
+    selected = TerminalMenu([str(_) for _ in store]).show()
+    if not selected:
+        sys.exit(0)  # Exit on 'q' press
+    return store[selected]
 
 
 def new_stored_entry() -> Connection:
