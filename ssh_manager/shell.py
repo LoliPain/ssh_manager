@@ -15,7 +15,7 @@ def one_time_selection() -> Connection:
     """
     store = proceed_stored()
     selected = TerminalMenu([str(_) for _ in store]).show()
-    if not selected:
+    if selected is None:
         sys.exit(0)  # Exit on 'q' press
     return store[selected]
 
