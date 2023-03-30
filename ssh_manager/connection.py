@@ -23,12 +23,19 @@ class Connection:
         self.remote_user = remote_user
         self.named_passwd = named_passwd
 
+    def env_passwd(self) -> str:
+        """Return a specified env var for selected connection
+
+        :return: $server_user like variable
+        """
+        return f"{self.named_passwd}_{self.remote_user}"
+
     def sshpass(self) -> str:
         """Returns a sshpass prepared action
 
         :return: sshpass -p passwd ssh user@host
         """
-        return f"sshpass -p ${self.named_passwd}_{self.remote_user} ssh {self.remote_user}@{self.hostname}"
+        return f"sshpass -p ${self.env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
     def to_json(self) -> dict:
         """Prepare instance for JSON dumping

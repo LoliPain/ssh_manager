@@ -55,8 +55,11 @@ def open_ssh():
     :return: No.
     """
     connection = one_time_selection()
-    if os.environ.get("TMUX"):
-        os.system(f"tmux rename-window '{connection.remote_user}@{connection.hostname}'")
-    os.system(connection.sshpass())
-    if os.environ.get("TMUX"):
-        os.system("kill -9 %d" % (os.getppid()))  # Dirty hack from Foo Bah to close tty after ssh ends
+    if os.environ.get(connection.env_passwd()):
+        if os.environ.get("TMUX"):
+            os.system(f"tmux rename-window '{connection.remote_user}@{connection.hostname}'")
+        os.system(connection.sshpass())
+        if os.environ.get("TMUX"):
+            os.system("kill -9 %d" % (os.getppid()))  # Dirty hack from Foo Bah to close tty after ssh ends
+    else:
+        print(f"${connection.env_passwd()} is empty!")
