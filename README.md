@@ -18,7 +18,7 @@ optional arguments:
 
 Normally it works only on UNIX-like systems due to envvars, but who knows...
 
-## 1. Enviroment
+## 1. Environment
 
 - sshpass - Non-interactive ssh password authentication
 
@@ -28,7 +28,7 @@ sudo apt install sshpass
 sshpass -V
 ```
  
-- $nickname_user - Enviroment variable stores the password
+- $nickname_user - Environment variable stores the password
 	- Can be installed to .zshrc / .bashrc from special branch
 
 ```
@@ -106,10 +106,8 @@ Name of remote using for stored password (and env variable): simmilk
 
 ## Important notes
 
-- Keep in mind that enviroment variable `$nick_user` is **REQUIRED**
+- Keep in mind that environment variable `$nick_user` is **REQUIRED**
 
-- ssh_manager is checking whether or not running inside TMUX, and applies those actions to it
+- ssh_manager is checking whether running inside TMUX, and applies those actions to it
 	- Renaming current window to active ssh session
 	- Termination shell on ssh disconnect
-
-

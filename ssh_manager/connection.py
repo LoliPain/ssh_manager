@@ -40,7 +40,7 @@ class Connection:
     def to_json(self) -> dict:
         """Prepare instance for JSON dumping
 
-        :return: JSON-compitable dict
+        :return: JSON-compatible dict
         """
         return {
             "hostname": self.hostname,
