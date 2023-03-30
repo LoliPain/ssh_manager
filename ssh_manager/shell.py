@@ -62,4 +62,4 @@ def open_ssh():
         if os.environ.get("TMUX"):
             os.system("kill -9 %d" % (os.getppid()))  # Dirty hack from Foo Bah to close tty after ssh ends
     else:
-        print(f"{connection.env_passwd()} is empty!")
+        print(f"${connection.env_passwd()} is empty!")
