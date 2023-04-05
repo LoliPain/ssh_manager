@@ -23,17 +23,19 @@ Normally it works only on UNIX-like systems due to envvars, sshpass and simple-t
 - sshpass - Non-interactive ssh password authentication
 
 - Python 3 > 3.10
-
-```
-sudo apt install sshpass
-
-sshpass -V
-```
  
 - $servernickname_user - Environment variable stores the password
 	- Can be installed to .zshrc / .bashrc from special branch
 
 ```
+sudo apt install sshpass
+
+sshpass -V
+
+sudo apt install python3.10
+
+python3.10 -V
+
 git clone -b shellscript https://github.com/LoliPain/ssh_manager
 
 python3 main.py
@@ -43,7 +45,6 @@ Follow the steps in script
 Reload shell
 
 Now you can export passwords from specified folder using in your shell:
-
 ```
 ```
 servernickname username
@@ -115,7 +116,7 @@ Name of remote using for stored password (and env variable): simmilk
 
 ## Important notes
 
-- Keep in mind that environment variable `$nick_user` is **REQUIRED**
+- Keep in mind that environment variable `$servernickname_user` is **REQUIRED**
 
 - ssh_manager is checking whether running inside TMUX, and applies those actions to it
 	- Renaming current window to active ssh session
