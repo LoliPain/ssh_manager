@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+from typing import NoReturn
 
 from simple_term_menu import TerminalMenu
 
@@ -47,7 +48,7 @@ def parse_mode() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def open_ssh():
+def open_ssh() -> NoReturn:
     """Start an SSH connection
     Checks whenever runs inside TMUX session, then renames active tmux window to user@host
     Also terminates tty on ssh disconnect while in TMUX

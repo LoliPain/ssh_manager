@@ -1,11 +1,12 @@
 from json import dumps
+from typing import NoReturn
 
 from .read import read_whole_store
 from .store_path import store_path
 from ..connection import Connection
 
 
-def append_to_stored(connection: Connection):
+def append_to_stored(connection: Connection) -> NoReturn:
     """Add new connection to storage
     If storage file not exists creates it
 

@@ -1,8 +1,10 @@
+from typing import NoReturn
+
 from .shell import new_stored_entry, open_ssh
 from .stored import append_to_stored, proceed_stored
 
 
-def routing(is_new: bool):
+def routing(is_new: bool) -> NoReturn:
     """Routing through script main functions
     If `-n` isn't specified checks storage, on empty case forces requires to make a new entry
 
