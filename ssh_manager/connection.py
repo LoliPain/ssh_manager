@@ -1,3 +1,6 @@
+from typing import Dict
+
+
 class Connection:
     """Basic stored connection
 
@@ -37,7 +40,7 @@ class Connection:
         """
         return f"sshpass -p ${self.env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
-    def to_json(self) -> dict:
+    def to_json(self) -> Dict[str, str]:
         """Prepare instance for JSON dumping
 
         :return: JSON-compatible dict
