@@ -16,7 +16,7 @@ optional arguments:
 
 ## Deploying
 
-Normally it works only on UNIX-like systems due to envvars, but who knows...
+Normally it works only on UNIX-like systems due to envvars, sshpass and simple-term-menu OS support, but everything is possible...
 
 ## 1. Environment
 
@@ -28,11 +28,11 @@ sudo apt install sshpass
 sshpass -V
 ```
  
-- $nickname_user - Environment variable stores the password
+- $servernickname_user - Environment variable stores the password
 	- Can be installed to .zshrc / .bashrc from special branch
 
 ```
-git clone -b shellscript https://1dev.lolipa.in/misc/ssh_manager
+git clone -b shellscript https://github.com/LoliPain/ssh_manager
 
 ./install_func.sh
 
@@ -48,7 +48,7 @@ Reload shell
 - Clone the repo
 	
 ```
-git clone https://1dev.lolipa.in/misc/ssh_manager
+git clone https://github.com/LoliPain/ssh_manager
 ```
 
 - Install it system-wide
@@ -111,3 +111,4 @@ Name of remote using for stored password (and env variable): simmilk
 - ssh_manager is checking whether running inside TMUX, and applies those actions to it
 	- Renaming current window to active ssh session
 	- Termination shell on ssh disconnect
+
