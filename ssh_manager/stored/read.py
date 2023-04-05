@@ -1,12 +1,12 @@
 import os.path
 from json import load
-from typing import List
+from typing import List, Union
 
 from .store_path import store_path
 from ..connection import Connection
 
 
-def read_whole_store() -> list:
+def read_whole_store() -> Union[list, List[dict]]:
     """Get all stored entries as plain dicts
 
     :return: Storage object or [] if not exist
@@ -18,7 +18,7 @@ def read_whole_store() -> list:
     return []
 
 
-def proceed_stored() -> list:
+def proceed_stored() -> Union[list, List[Connection]]:
     """Automatically read all stored entries and proceed it to `Connection` instances
 
     :return: List of all stored entries
