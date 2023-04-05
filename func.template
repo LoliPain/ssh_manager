@@ -2,6 +2,6 @@ func:template() {
 	USER=$1
 	[[ ${USER} ]] || return
 	USER_FMT="\033[0;35m${USER}\033[0m@\033[0;34mservername:template\033[0m"
-	FILE_PATH="folder:template${USER}"
+	FILE_PATH="folder:template/${USER}"
 	[[ -f ${FILE_PATH} ]] && { export "servername:template_${USER}"="$(cat ${FILE_PATH})"; echo "Exported ${USER_FMT} password" } || echo "No password file for ${USER_FMT}"
 }
