@@ -27,25 +27,30 @@ Normally it works only on UNIX-like systems due to envvars, sshpass and simple-t
 - $servernickname_user - Environment variable stores the password
 	- Can be installed to .zshrc / .bashrc from special branch
 
-```
-sudo apt install sshpass
+### Install dependencies
 
-sshpass -V
+`sudo apt install sshpass`
 
-sudo apt install python3.10
+- `sshpass -V` *(Verify sshpass installation)*
 
-python3.10 -V
+`sudo apt install python3.10`
 
-git clone -b shellscript https://github.com/LoliPain/ssh_manager
+- `python3.10 -V` *(Verify python installation)*
 
-python3 main.py
+`git clone -b shellscript https://github.com/LoliPain/ssh_manager`
 
-Follow the steps in script
+`cd ssh_manager`
 
-Reload shell
+`python3 main.py`
+
+- Follow the steps in script
+
+	- Reload shell
+	(`source ~/.bashrc` **/** `source ~/.zshrc`)
+
+ -----
 
 Now you can export passwords from specified folder using in your shell:
-```
 ```
 servernickname username
 
