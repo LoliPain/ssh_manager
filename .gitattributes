@@ -2,4 +2,6 @@
 *.py text
 *.txt text eol=crlf
 
+# Normalize other files
+* text=auto
 
