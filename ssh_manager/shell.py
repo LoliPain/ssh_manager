@@ -44,7 +44,29 @@ def parse_mode() -> argparse.Namespace:
     parser.add_argument(
         '-n',
         default=False,
-        action='store_true'
+        action='store_true',
+        help=(
+            'Proceed new SSH connection to storage\n'
+            'Executed by default if storage is empty.'
+        )
+    )
+    parser.add_argument(
+        '-R',
+        default=False,
+        action='store_true',
+        help=(
+            'Acts same as $SSH_M_R\n'
+            'Prevents renaming TMUX window on SSH connection.'
+        )
+    )
+    parser.add_argument(
+        '-C',
+        default=False,
+        action='store_true',
+        help=(
+            'Acts same as $SSH_M_C\n'
+            'Prevents closing of TMUX after SSH is disconnected.'
+        )
     )
     return parser.parse_args()
 
