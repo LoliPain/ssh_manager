@@ -7,11 +7,20 @@ from .shell import parse_mode
 
 
 class ActionMode(Enum):
+    """Available modes in TMUX environment
+
+    """
     NO_CLOSE = 1
     NO_RENAME = 2
 
 
 def parse_mode_env(action: ActionMode) -> bool:
+    """Parse envvars and launch arguments to determine correct mode
+
+    :param action: Requested tmux mode to be checked
+
+    :return: Mode status
+    """
     match action:
         case ActionMode.NO_CLOSE:
             return bool(parse_mode().R or os.environ.get("SSH_M_R"))
