@@ -73,8 +73,7 @@ def parse_mode() -> argparse.Namespace:
 
 def open_ssh() -> NoReturn:
     """Start an SSH connection
-    Checks whenever runs inside TMUX session, then renames active tmux window to user@host
-    Also terminates tty on ssh disconnect while in TMUX
+    Checks whenever runs inside TMUX session, then proceeds further handling in `run_in_tmux`
 
     :return: No.
     """
