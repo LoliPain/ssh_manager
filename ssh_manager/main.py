@@ -1,5 +1,5 @@
+from .parse_args import parse_mode
 from .routing import routing
-from .shell import parse_mode
 
 
 def main():

@@ -1,4 +1,3 @@
-import argparse
 import os
 import sys
 from typing import NoReturn
@@ -32,43 +31,6 @@ def new_stored_entry() -> Connection:
         remote_user=input("Remote user: "),
         named_passwd=input("Name of remote using for stored password (and env variable): "),
     )
-
-
-def parse_mode() -> argparse.Namespace:
-    """Parse launch arguments
-    Should be called before routing and pass arguments to it
-
-    :return: Parsed arguments `Namespace`
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-n',
-        default=False,
-        action='store_true',
-        help=(
-            'Proceed new SSH connection to storage\n'
-            'Executed by default if storage is empty.'
-        )
-    )
-    parser.add_argument(
-        '-R',
-        default=False,
-        action='store_true',
-        help=(
-            'Acts same as $SSH_M_R\n'
-            'Prevents renaming TMUX window on SSH connection.'
-        )
-    )
-    parser.add_argument(
-        '-C',
-        default=False,
-        action='store_true',
-        help=(
-            'Acts same as $SSH_M_C\n'
-            'Prevents closing of TMUX after SSH is disconnected.'
-        )
-    )
-    return parser.parse_args()
 
 
 def open_ssh() -> NoReturn:
