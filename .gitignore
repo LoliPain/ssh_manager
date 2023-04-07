@@ -1,2 +1,7 @@
-__pycache__
-.idea
+# PEP-3147
+**/__pycache__/*.pyc
+
+# Vim cache
+*.swp
+*.swo
+
