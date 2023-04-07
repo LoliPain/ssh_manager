@@ -1,6 +1,10 @@
 # PEP-3147
 **/__pycache__/*.pyc
 
+# pip <21.* builds
+build/
+*.egg-info
+
 # Vim cache
 *.swp
 *.swo
