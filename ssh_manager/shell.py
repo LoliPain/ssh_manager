@@ -1,4 +1,3 @@
-import argparse
 import os
 import sys
 from typing import NoReturn
@@ -7,6 +6,7 @@ from simple_term_menu import TerminalMenu
 
 from .connection import Connection
 from .stored import proceed_stored
+from .tmux import run_in_tmux
 
 
 def one_time_selection() -> Connection:
@@ -33,34 +33,17 @@ def new_stored_entry() -> Connection:
     )
 
 
-def parse_mode() -> argparse.Namespace:
-    """Parse launch arguments
-    Should be called before routing and pass arguments to it
-
-    :return: Parsed arguments `Namespace`
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-n',
-        default=False,
-        action='store_true'
-    )
-    return parser.parse_args()
-
-
 def open_ssh() -> NoReturn:
     """Start an SSH connection
-    Checks whenever runs inside TMUX session, then renames active tmux window to user@host
-    Also terminates tty on ssh disconnect while in TMUX
+    Checks whenever runs inside TMUX session, then proceeds further handling in `run_in_tmux`
 
     :return: No.
     """
     connection = one_time_selection()
     if os.environ.get(connection.env_passwd()):
         if os.environ.get("TMUX"):
-            os.system(f"tmux rename-window '{connection.remote_user}@{connection.hostname}'")
-        os.system(connection.sshpass())
-        if os.environ.get("TMUX"):
-            os.system("kill -9 %d" % (os.getppid()))  # Dirty hack from Foo Bah to close tty after ssh ends
+            run_in_tmux(connection)
+        else:
+            os.system(connection.sshpass())
     else:
         print(f"${connection.env_passwd()} is empty!")

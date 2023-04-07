@@ -6,11 +6,13 @@
 ```
 ssh_manager: 
 
-usage: ssh_m [-h] [-n]
+usage: ssh_m [-h] [-n] [-R] [-C]
 
 optional arguments:
   -h, --help  show this help message and exit
-  -n 
+  -n          Proceed new SSH connection to storage Executed by default if storage is empty.
+  -R          Acts same as $SSH_M_R Prevents renaming TMUX window on SSH connection.
+  -C          Acts same as $SSH_M_C Prevents closing of TMUX after SSH is disconnected.
 ```
 
 
@@ -119,10 +121,25 @@ Name of remote using for stored password (and env variable): simmilk
 
 ```
 
+## Configuration
+
+As mentioned before ssh_manager aims to rename TMUX active window and close pane at session disconnect.
+There's a few options how to configure that behavior:
+
+### Launch arguments
+
+`@ ssh_m -R` - *[**R**]ename - will prevent ssh_manager renaming active TMUX window*
+
+- Is alternative to `$SSH_M_R` environment variable. Could be any value except empty
+
+`@ ssh_m -C` - *[**C**]lose - will prevent ssh_manager closing pane after SSH terminated*
+
+- Is alternative to `$SSH_M_C` environment variable. Could be any value except empty
+
 ## Important notes
 
 - Keep in mind that environment variable `$servernickname_user` is **REQUIRED**
 
-- ssh_manager is checking whether running inside TMUX, and applies those actions to it
+- ssh_manager by default is checking whether running inside TMUX, and applies those actions to it
 	- Renaming current window to active ssh session
 	- Termination shell on ssh disconnect
