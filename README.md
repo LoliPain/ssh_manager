@@ -1,5 +1,9 @@
 ## ssh_manager
 
+<p align="center">
+    <img style="border-radius: 20px" max-width="100%" src=".github/static/preview.png">
+</p>
+
 ##### - Keep all ssh connection next to you
 *And don't distract on password prompts*
 
