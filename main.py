@@ -20,13 +20,13 @@ updated_template = updated_template.replace('func:template', server_nickname)
 updated_template = updated_template.replace('servername:template', server_nickname)
 updated_template = updated_template.replace('folder:template', keys_folder)
 
-shell_in_use = os.environ.get('SHELL')
+shell_in_use = os.environ.get('SHELL').split('/')[-1]
 
 match shell_in_use:
-    case '/bin/zsh':
+    case 'zsh':
         with open(os.path.expanduser("~/.zshrc"), 'a') as c:
             c.write(updated_template)
-    case '/bin/bash':
+    case 'bash':
         with open(os.path.expanduser("~/.bashrc"), 'a') as c:
             c.write(updated_template)
     case _:
