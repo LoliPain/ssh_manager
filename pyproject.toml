@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "ssh-manager"
+version = "0.1.1"
+description = "Keep all ssh connection next to you"
+authors = ["LoliPain <p2love.loli@gmail.com>"]
+license = "MIT license"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+simple-term-menu = "1.6.1"
+colorama = "0.4.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
