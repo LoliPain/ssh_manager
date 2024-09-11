@@ -8,3 +8,5 @@ dist/
 *.swp
 *.swo
 
+# temporary poetry lock
+poetry.lock
