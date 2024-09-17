@@ -22,7 +22,8 @@ optional arguments:
 
 ## Deploying
 
-Normally it works only on UNIX-like systems due to envvars, sshpass and simple-term-menu OS support, but everything is possible...
+Normally it works only on UNIX-like systems due to envvars,
+sshpass and simple-term-menu OS support, but everything is possible...
 
 ## 1. Environment
 
@@ -42,6 +43,8 @@ Normally it works only on UNIX-like systems due to envvars, sshpass and simple-t
 `sudo apt install python3.10`
 
 - `python3.10 -V` *(Verify python installation)*
+
+#### Install shell script
 
 `git clone -b shellscript https://github.com/LoliPain/ssh_manager`
 
