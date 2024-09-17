@@ -24,7 +24,7 @@ assignees: ''
 `@ python3.x -V` *where's x is your python release*
 
 **Checklist**:
-- [ ] *My issue is not related to connection problems* **or** *I'm aware that my `ssh_manager` storage and shell environment is fine*
+- [ ] *My issue is not related to connection problems,* **or** *I'm aware that my `ssh_manager` storage and shell environment is fine*
 	- [ ] *Direct connection using `sshpass -p` is performed, but connection through `ssh_manager` seems inappropriate*
 - [ ] *Broken functionality is declared and documented in the README project description*
 
