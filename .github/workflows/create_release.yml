@@ -3,7 +3,7 @@ name: Poetry build & publish release
 on:
   pull_request:
     branches:
-      - main
+      - master
     types: closed
 
 env:
