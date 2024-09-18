@@ -9,8 +9,8 @@ on:
 jobs:
   build:
     if: |
-      github.event.pull_request.merged == true
-      ${{ startsWith(github.event.pull_request.title, 'rc-') }}
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.title, 'rc-')
 
     name: Poetry build .whl artifacts
     runs-on: ubuntu-latest
