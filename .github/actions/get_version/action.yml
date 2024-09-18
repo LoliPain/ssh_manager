@@ -1,0 +1,20 @@
+name: "Set version"
+description: "Set tag and mnemo version from pyproject.toml"
+
+outputs:
+  title:
+    description: "Title to be displayed for release"
+    value: ${{ steps.set_meta.outputs.TITLE }}
+  tag:
+    description: "Python's version management-friendly tag"
+    value: ${{ steps.set_meta.outputs.TAG }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: set_meta
+      run: |
+        echo "TITLE=$( echo '${{ github.event.pull_request.title }}' | sed -r 's/^rc-(.+)$/ \1/' )" >> $GITHUB_OUTPUT
+        echo "TAG=$( poetry version -s )" >> $GITHUB_OUTPUT
+
+

@@ -10,7 +10,7 @@ jobs:
   build:
     if: |
       github.event.pull_request.merged == true
-      ${{ startsWith(github.event.pull_request.title, 'pre-') && endsWith(github.event.pull_request.title, '-release')}}
+      ${{ startsWith(github.event.pull_request.title, 'rc-') }}
 
     name: Poetry build .whl artifacts
     runs-on: ubuntu-latest
@@ -34,20 +34,18 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-    - run: |
-        echo "VER=$( echo '${{ github.event.pull_request.title }}' | sed -r 's/^pre-(.+)-release$/\1/; t; d' )" >> $GITHUB_ENV
-    - run: [ $VER ]
-
     - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
       with:
         name: wheel
 
+    - id: get_meta
+      uses: ./.github/actions/get_version
     - name: Set tag and publish release
       run: |
         gh release create \
-          $VER *whl \
-          --title="$VER" \
+          ${{ steps.get_meta.outputs.TAG }} *whl \
+          --title="${{ steps.get_meta.outputs.TITLE }}" \
           --repo="$GITHUB_REPOSITORY" \
           --generate-notes \
 
