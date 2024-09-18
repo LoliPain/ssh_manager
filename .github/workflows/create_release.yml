@@ -3,11 +3,8 @@ name: Poetry build & publish release
 on:
   pull_request:
     branches:
-      - main
+      - master
     types: closed
-
-env:
-  PYTHON: 3.10
 
 jobs:
   build:
@@ -22,7 +19,7 @@ jobs:
 
     - uses: actions/setup-python@v3
       with:
-        python-version: ${{ env.PYTHON }}
+        python-version: ${{ vars.PYTHON }}
 
     - name: Set up Poetry environment
       uses: snok/install-poetry@v1
@@ -42,13 +39,23 @@ jobs:
 
     name: Publish artifacts on releases
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
+    - name: Set envvars for version name
+      run: VER=$(echo ${{ github.event.pull_request.title }} | sed 's/^pre-\(.+\)-release$/\1/')
+
+    - name: Retrieve artifacts and repo
+      uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
       with:
         name: wheel
-    - run: VER=$(echo ${{ github.event.pull_request.title }} | sed 's/^pre-\(.*\)-release$/\1/')
+
+    - name: Set tag and publish release
     - run: |
-        gh release create $VER \
-            --generate-notes \
-            *whl
+        gh release create \
+          $VER *whl \
+          --title="$VER" \
+          --repo="$GITHUB_REPOSITORY" \
+          --generate-notes \
 
