@@ -8,27 +8,19 @@ on:
 
 jobs:
   build:
-    name: Poetry build .whl artifacts
     if: |
       github.event.pull_request.merged == true
-      ${{ startsWith(github.event.pull_request.title, 'pre-') && endsWith(github.event.pull_request.title, '-release')}}
+      ${{ startsWith(github.event.pull_request.title, 'rc-') }}
 
+    name: Poetry build .whl artifacts
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
-    - uses: actions/setup-python@v3
-      with:
-        python-version: ${{ vars.PYTHON }}
-
-    - name: Set up Poetry environment
-      uses: snok/install-poetry@v1
-
-    - name: Deps & build
+    - uses: ./.github/actions/setup_environment
+    - name: Install deps & build
       run: |
         poetry install --no-interaction
         poetry build -f wheel -vv
-
     - uses: actions/upload-artifact@v4
       with:
         name: wheel
@@ -42,25 +34,18 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-    - name: Set envvars for version name
-      run: |
-        echo "VER=$( echo '${{ github.event.pull_request.title }}' | sed -r 's/^pre-(.+)-release$/\1/; t; d' )" >> $GITHUB_ENV
-
-    - name: Check VER value is present
-      run: |
-        [ $VER ]
-
-    - name: Retrieve artifacts and repo
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
       with:
         name: wheel
 
+    - id: get_meta
+      uses: ./.github/actions/set_version
     - name: Set tag and publish release
       run: |
         gh release create \
-          $VER *whl \
-          --title="$VER" \
+          ${{ steps.get_meta.outputs.TAG }} *whl \
+          --title="${{ steps.get_meta.outputs.TITLE }}" \
           --repo="$GITHUB_REPOSITORY" \
           --generate-notes \
 
