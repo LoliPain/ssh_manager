@@ -17,6 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/setup_environment
+      with:
+        python-version: ${{ vars.PYTHON }}
     - name: Install deps & build
       run: |
         poetry install --no-interaction

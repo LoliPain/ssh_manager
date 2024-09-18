@@ -4,8 +4,7 @@ description: "Create default CICD environment"
 inputs:
   python-version:
     description: "CPython version"
-    required: false
-    default: ${{ vars.PYTHON }}
+    required: true
 
 runs:
   using: "composite"
