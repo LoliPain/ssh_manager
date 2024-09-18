@@ -3,11 +3,11 @@ name: Poetry build & publish release
 on:
   pull_request:
     branches:
-      - main
+      - master
     types: closed
 
 env:
-  PYTHON: 3.10
+  PYTHON: "3.10"
 
 jobs:
   build:
