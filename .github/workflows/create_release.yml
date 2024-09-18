@@ -8,15 +8,14 @@ on:
 
 jobs:
   build:
-    name: Poetry build .whl artifacts
     if: |
       github.event.pull_request.merged == true
       ${{ startsWith(github.event.pull_request.title, 'pre-') && endsWith(github.event.pull_request.title, '-release')}}
 
+    name: Poetry build .whl artifacts
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
     - uses: actions/setup-python@v3
       with:
         python-version: ${{ vars.PYTHON }}
@@ -28,7 +27,6 @@ jobs:
       run: |
         poetry install --no-interaction
         poetry build -f wheel -vv
-
     - uses: actions/upload-artifact@v4
       with:
         name: wheel
@@ -42,16 +40,11 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-    - name: Set envvars for version name
-      run: |
+    - run: |
         echo "VER=$( echo '${{ github.event.pull_request.title }}' | sed -r 's/^pre-(.+)-release$/\1/; t; d' )" >> $GITHUB_ENV
+    - run: [ $VER ]
 
-    - name: Check VER value is present
-      run: |
-        [ $VER ]
-
-    - name: Retrieve artifacts and repo
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
       with:
         name: wheel
