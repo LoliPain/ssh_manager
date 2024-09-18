@@ -40,7 +40,7 @@ jobs:
         name: wheel
 
     - id: get_meta
-      uses: ./.github/actions/get_version
+      uses: ./.github/actions/set_version
     - name: Set tag and publish release
       run: |
         gh release create \
