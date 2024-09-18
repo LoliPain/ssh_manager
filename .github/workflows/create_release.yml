@@ -16,14 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v3
-      with:
-        python-version: ${{ vars.PYTHON }}
-
-    - name: Set up Poetry environment
-      uses: snok/install-poetry@v1
-
-    - name: Deps & build
+    - uses: ./.github/actions/setup_environment
+    - name: Install deps & build
       run: |
         poetry install --no-interaction
         poetry build -f wheel -vv
