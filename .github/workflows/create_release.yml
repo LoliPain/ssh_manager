@@ -14,7 +14,7 @@ jobs:
     name: Poetry build .whl artifacts
     if: |
       github.event.pull_request.merged == true
-      ${{ startsWith(github.ref, 'pre-') && endsWith(github.ref, '-release')}}
+      ${{ startsWith(github.event.pull_request.title, 'pre-') && endsWith(github.event.pull_request.title, '-release')}}
 
     runs-on: ubuntu-latest
     steps:
@@ -46,7 +46,7 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: wheel
-    - run: VER=$(echo ${{ github.ref }} | sed 's/^pre-\(.*\)-release$/\1/')
+    - run: VER=$(echo ${{ github.event.pull_request.title }} | sed 's/^pre-\(.*\)-release$/\1/')
     - run: |
         gh release create $VER \
             --generate-notes \
