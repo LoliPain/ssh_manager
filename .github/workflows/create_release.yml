@@ -1,0 +1,54 @@
+name: Poetry build & publish release
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: closed
+
+env:
+  PYTHON: 3.10
+
+jobs:
+  build:
+    name: Poetry build .whl artifacts
+    if: |
+      github.event.pull_request.merged == true
+      ${{ startsWith(github.event.pull_request.title, 'pre-') && endsWith(github.event.pull_request.title, '-release')}}
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v3
+      with:
+        python-version: ${{ env.PYTHON }}
+
+    - name: Set up Poetry environment
+      uses: snok/install-poetry@v1
+
+    - name: Deps & build
+      run: |
+        poetry install --no-interaction
+        poetry build -f wheel -vv
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: wheel
+        path: dist/*.whl
+
+  artifacts:
+    needs: build
+
+    name: Publish artifacts on releases
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        name: wheel
+    - run: VER=$(echo ${{ github.event.pull_request.title }} | sed 's/^pre-\(.*\)-release$/\1/')
+    - run: |
+        gh release create $VER \
+            --generate-notes \
+            *whl
+
