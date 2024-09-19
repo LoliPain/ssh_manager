@@ -23,6 +23,5 @@ jobs:
             - '**/*.py'
             - 'pyproject.toml'
     - if: steps.changes.outputs.python == 'true'
-      run: |
-        # Python-related checks
+      uses: ./.github/worksflows/python_checks.yml
 

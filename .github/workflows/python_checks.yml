@@ -1,0 +1,15 @@
+name: Python checks
+
+on: workflow_call
+
+jobs:
+  check_mypy:
+    name: Run mypy linter
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/setup_environment
+      with:
+        python-version: ${{ vars.PYTHON }}
+        aux-deps: "checks"
+
