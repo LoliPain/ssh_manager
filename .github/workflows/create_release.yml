@@ -22,10 +22,7 @@ jobs:
     - uses: ./.github/actions/setup_environment
       with:
         python-version: ${{ vars.PYTHON }}
-    - name: Install deps & build
-      run: |
-        poetry install --no-interaction
-        poetry build -f wheel -vv
+    - run: poetry build -f wheel -vv
     - uses: actions/upload-artifact@v4
       with:
         name: wheel

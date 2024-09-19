@@ -13,5 +13,6 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
     - uses: snok/install-poetry@v1
+    - run: poetry install --no-interaction
 
 
