@@ -20,18 +20,26 @@ def read_whole_store() -> List[StoredConnection]:
             try:
                 loaded = stored_connections.validate_python(load(f))
             except ValidationError as e:
+                import builtins
                 exception_header = (
-                    f"Storage entries contains: {Back.RED + Fore.WHITE}{e.error_count()} validation errors\n"
                     f"{Style.RESET_ALL + Fore.RED + store_path + Style.RESET_ALL}\n"
+                    f"Storage entries contains: {Back.RED + Fore.WHITE}{e.error_count()} validation errors "
+                    f"{Style.RESET_ALL}\n"
                 )
                 for _ in e.errors():
                     exception_header += (
                         f"\n\n{Fore.RED + _['msg'] + Style.RESET_ALL} "
                         f"{Back.RED + _['loc'][1] + Style.RESET_ALL} where is:\n\n"
                     )
-                    exception_header += "\n".join(
-                        [f'{Fore.CYAN + z + Style.RESET_ALL}: ({y})' for z, y in _['input'].items()]
-                    )
+                    match type(_['input']):
+                        case builtins.dict:
+                            exception_header += "\n".join(
+                                [f'{Fore.CYAN + z + Style.RESET_ALL}: ({y})' for z, y in _['input'].items()]
+                            )
+                        case _:
+                            exception_header += (
+                                f"{Fore.CYAN} {_['input']} {Style.RESET_ALL}"
+                            )
                 raise SystemExit(exception_header)
         return loaded
     return []
