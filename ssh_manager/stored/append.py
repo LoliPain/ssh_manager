@@ -1,12 +1,13 @@
 from json import dumps
-from typing import NoReturn
+
+from pydantic_core import to_jsonable_python
 
 from .read import read_whole_store
 from .store_path import store_path
 from ..connection import Connection
 
 
-def append_to_stored(connection: Connection) -> NoReturn:
+def append_to_stored(connection: Connection) -> None:
     """Add new connection to storage
     If storage file not exists creates it
 
@@ -15,6 +16,6 @@ def append_to_stored(connection: Connection) -> NoReturn:
     """
     loaded = read_whole_store()
     with open(store_path, 'w+') as f:
-        loaded.append(connection.to_json())
-        f.write(dumps(loaded))
+        loaded.append(connection.to_model())
+        f.write(dumps(to_jsonable_python(loaded)))
     return

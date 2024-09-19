@@ -1,6 +1,5 @@
 import os
 import sys
-from typing import NoReturn
 
 from simple_term_menu import TerminalMenu
 
@@ -33,7 +32,7 @@ def new_stored_entry() -> Connection:
     )
 
 
-def open_ssh() -> NoReturn:
+def open_ssh() -> None:
     """Start an SSH connection
     Checks whenever runs inside TMUX session, then proceeds further handling in `run_in_tmux`
 

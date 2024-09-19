@@ -1,4 +1,13 @@
-from typing import Dict
+from pydantic import BaseModel
+
+
+class StoredConnection(BaseModel):
+    """Single element from store as python object
+
+    """
+    hostname: str
+    remote_user: str
+    named_passwd: str
 
 
 class Connection:
@@ -40,16 +49,16 @@ class Connection:
         """
         return f"sshpass -p ${self.env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
-    def to_json(self) -> Dict[str, str]:
+    def to_model(self) -> StoredConnection:
         """Prepare instance for JSON dumping
 
         :return: JSON-compatible dict
         """
-        return {
+        return StoredConnection.model_validate({
             "hostname": self.hostname,
             "remote_user": self.remote_user,
             "named_passwd": self.named_passwd
-        }
+        })
 
     def __str__(self) -> str:
         """User-readable entry
