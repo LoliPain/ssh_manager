@@ -5,6 +5,14 @@ inputs:
   python-version:
     description: "CPython version"
     required: true
+  aux-deps:
+    description: "Comma separated list of dependencies groups to be installed" 
+    required: false
+    default: ""
+  self-install:
+    description: "Stringish bool value to pass flag --no-root to poetry" 
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -13,6 +21,9 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
     - uses: snok/install-poetry@v1
-    - run: poetry install --no-interaction
-
+    - run: |
+        poetry install --no-interaction \
+          $(( [[ ${{ inputs.self-install }} != "true" ]] && echo "--no-root") || echo "") \
+          $(( [[ ${{ inputs.aux-deps }} ]] && echo "--with ${{ inputs.aux-deps }}") || echo "")
+      shell: bash
 
