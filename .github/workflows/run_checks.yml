@@ -22,6 +22,11 @@ jobs:
           python:
             - '**/*.py'
             - 'pyproject.toml'
+          gh_actions:
+            - '.github/workflows/**'
+            - '.github/actions/**'
+    - if: steps.changes.outputs.gh_actions == 'true'
+      uses: ./.github/worksflows/gh_actions_checks.yml
     - if: steps.changes.outputs.python == 'true'
       uses: ./.github/worksflows/python_checks.yml
 

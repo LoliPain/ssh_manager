@@ -1,0 +1,27 @@
+name: Github Actions checks
+
+on: workflow_call
+
+jobs:
+  check_workflows:
+    name: Run linter for workflows
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: asdf-vm/actions/install@v3
+      with:
+        tool_versions: action-validator
+    - run: |
+        find .github/workflows -type f \( -iname \*.yaml -o -iname \*.yml \) \
+          | xargs -I {} action-validator --verbose {}
+  check_actions:
+    name: Run linter for actions
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: asdf-vm/actions/install@v3
+      with:
+        tool_versions: action-validator
+    - run: |
+        find .github/actions -type f \( -iname \*.yaml -o -iname \*.yml \) \
+          | xargs -I {} action-validator --verbose {}
