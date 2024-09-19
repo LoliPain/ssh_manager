@@ -12,4 +12,5 @@ jobs:
       with:
         python-version: ${{ vars.PYTHON }}
         aux-deps: "checks"
+    - run: poetry run mypy -p ssh_manager
 
