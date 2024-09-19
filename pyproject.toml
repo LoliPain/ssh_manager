@@ -42,6 +42,19 @@ python = "^3.10"
 simple-term-menu = "1.6.1"
 colorama = "0.4.6"
 
+[tool.poetry.group.checks]
+optional = true
+
+[tool.poetry.group.checks.dependencies]
+mypy = "*"
+
+[tool.mypy]
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "simple_term_menu"
+ignore_missing_imports = true
+
 [tool.poetry.scripts]
 ssh_m = "ssh_manager.main:main"
 
