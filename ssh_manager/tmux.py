@@ -1,11 +1,10 @@
 import os
-from typing import NoReturn
 
 from .connection import Connection
 from .parse_args import parse_mode_env, ActionMode
 
 
-def run_in_tmux(connection: Connection) -> NoReturn:
+def run_in_tmux(connection: Connection) -> None:
     """Run SSH connection with specified TMUX features
     Could rename an active window to user@hostname and terminates window on connection close
 
