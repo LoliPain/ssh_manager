@@ -41,6 +41,7 @@ readme = "README.md"
 python = "^3.10"
 colorama = "0.4.6"
 pydantic = "^2.9.2"
+pick = "^2.4.0"
 
 [tool.poetry.group.checks]
 optional = true
@@ -54,7 +55,7 @@ types-setuptools = "*"
 check_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ["pydantic"]
+module = ["pydantic", "pick"]
 ignore_missing_imports = true
 
 [tool.poetry.scripts]
@@ -63,4 +64,3 @@ ssh_m = "ssh_manager.main:main"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-

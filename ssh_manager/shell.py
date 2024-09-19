@@ -1,6 +1,10 @@
 import os
 import sys
 
+from pick import pick
+from pkg_resources import get_distribution
+
+
 from .connection import Connection
 from .stored import proceed_stored
 from .tmux import run_in_tmux
@@ -12,9 +16,14 @@ def one_time_selection() -> Connection:
     :return: Selected connection instance
     """
     store = proceed_stored()
-    # selected = TerminalMenu([str(_) for _ in store]).show()
-    selected = None
-    if selected is None:
+    _, selected = pick(
+        title=f"ssh_manager v{get_distribution('ssh_manager').version}: \n",
+        options=[str(_) for _ in store],
+        indicator=f">",
+        clear_screen=False,
+        quit_keys=[ord('q')]
+    )
+    if _ is None:
         sys.exit(0)  # Exit on 'q' press
     return store[selected]
 
