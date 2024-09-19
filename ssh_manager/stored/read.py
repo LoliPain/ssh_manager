@@ -1,19 +1,23 @@
 import os.path
 from json import load
 from typing import List, Union
+from typing_extensions import Never
+
+from pydantic import TypeAdapter
 
 from .store_path import store_path
-from ..connection import Connection
+from ..connection import Connection, StoredElement
 
 
-def read_whole_store() -> Union[list, List[dict]]:
+def read_whole_store() -> Union[List[Never], List[StoredElement]]:
     """Get all stored entries as plain dicts
 
     :return: Storage object or [] if not exist
     """
     if os.path.exists(store_path):
         with open(store_path, 'r') as f:
-            loaded: List[dict] = load(f)
+            stored_elements = TypeAdapter(List[StoredElement])
+            loaded = stored_elements.validate_python(load(f))
         return loaded
     return []
 
