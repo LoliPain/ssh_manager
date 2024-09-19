@@ -8,7 +8,10 @@ def main():
     :return: No, lol.
     """
     print("ssh_manager: \n")
-    routing(parse_mode().n)
+    try:
+        routing(parse_mode().n)
+    except KeyboardInterrupt:
+        raise SystemExit('\n')
 
 
 if __name__ == "__main__":
