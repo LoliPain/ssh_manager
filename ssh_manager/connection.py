@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class StoredElement(BaseModel):
+class StoredConnection(BaseModel):
     """Single element from store as python object
 
     """
@@ -49,12 +49,12 @@ class Connection:
         """
         return f"sshpass -p ${self.env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
-    def to_json(self) -> StoredElement:
+    def to_model(self) -> StoredConnection:
         """Prepare instance for JSON dumping
 
         :return: JSON-compatible dict
         """
-        return StoredElement.model_validate({
+        return StoredConnection.model_validate({
             "hostname": self.hostname,
             "remote_user": self.remote_user,
             "named_passwd": self.named_passwd

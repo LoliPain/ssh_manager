@@ -1,5 +1,7 @@
 from json import dumps
 
+from pydantic_core import to_jsonable_python
+
 from .read import read_whole_store
 from .store_path import store_path
 from ..connection import Connection
@@ -14,6 +16,6 @@ def append_to_stored(connection: Connection) -> None:
     """
     loaded = read_whole_store()
     with open(store_path, 'w+') as f:
-        loaded.append(connection.to_json())
-        f.write(dumps(loaded))
+        loaded.append(connection.to_model())
+        f.write(dumps(to_jsonable_python(loaded)))
     return
