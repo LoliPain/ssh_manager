@@ -49,6 +49,7 @@ optional = true
 [tool.poetry.group.checks.dependencies]
 mypy = "*"
 types-colorama = "^0.4.15.20240311"
+types-setuptools = "*"
 
 [tool.mypy]
 check_untyped_defs = true
