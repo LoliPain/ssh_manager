@@ -10,9 +10,12 @@ on:
       - master
 
 jobs:
-  checks_runner:
+  checks_prepare:
     name: Collect changes
     runs-on: ubuntu-latest
+    outputs:
+      gh_actions: ${{ steps.changes.outputs.gh_actions }}
+      python: ${{ steps.changes.outputs.python }}
     steps:
     - uses: actions/checkout@v4
     - uses: dorny/paths-filter@v3
@@ -25,8 +28,14 @@ jobs:
           gh_actions:
             - '.github/workflows/**'
             - '.github/actions/**'
-    - if: steps.changes.outputs.gh_actions == 'true'
-      uses: ./.github/worksflows/gh_actions_checks.yml
-    - if: steps.changes.outputs.python == 'true'
-      uses: ./.github/worksflows/python_checks.yml
+
+  run_gh:
+    needs: checks_prepare
+    if: needs.checks_prepare.outputs.gh_actions == 'true'
+    uses: ./.github/workflows/gh_actions_checks.yml
+
+  run_py:
+    needs: checks_prepare
+    if: needs.checks_prepare.outputs.python == 'true'
+    uses: ./.github/workflows/python_checks.yml
 
