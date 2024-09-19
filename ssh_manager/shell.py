@@ -1,8 +1,6 @@
 import os
 import sys
 
-from simple_term_menu import TerminalMenu
-
 from .connection import Connection
 from .stored import proceed_stored
 from .tmux import run_in_tmux
@@ -14,7 +12,8 @@ def one_time_selection() -> Connection:
     :return: Selected connection instance
     """
     store = proceed_stored()
-    selected = TerminalMenu([str(_) for _ in store]).show()
+    # selected = TerminalMenu([str(_) for _ in store]).show()
+    selected = None
     if selected is None:
         sys.exit(0)  # Exit on 'q' press
     return store[selected]
