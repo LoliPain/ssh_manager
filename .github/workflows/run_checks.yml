@@ -1,0 +1,28 @@
+name: Run pre-merge checks
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [synchronize, opened]
+  push:
+    branches:
+      - master
+
+jobs:
+  checks_runner:
+    name: Collect changes
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v3
+      id: changes
+      with:
+        filters: |
+          python:
+            - '**/*.py'
+            - 'pyproject.toml'
+    - if: steps.changes.outputs.python == 'true'
+      run: |
+        # Python-related checks
+
