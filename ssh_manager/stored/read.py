@@ -2,7 +2,8 @@ import os.path
 from json import load
 from typing import List, Union
 
-from pydantic import TypeAdapter
+from colorama import Back, Fore, Style
+from pydantic import TypeAdapter, ValidationError
 
 from .store_path import store_path
 from ..connection import Connection, StoredConnection
@@ -16,7 +17,22 @@ def read_whole_store() -> List[StoredConnection]:
     if os.path.exists(store_path):
         with open(store_path, 'r') as f:
             stored_connections = TypeAdapter(List[StoredConnection])
-            loaded = stored_connections.validate_python(load(f))
+            try:
+                loaded = stored_connections.validate_python(load(f))
+            except ValidationError as e:
+                exception_header = (
+                    f"Storage entries contains: {Back.RED + Fore.WHITE}{e.error_count()} validation errors\n"
+                    f"{Style.RESET_ALL + Fore.RED + store_path + Style.RESET_ALL}\n"
+                )
+                for _ in e.errors():
+                    exception_header += (
+                        f"\n\n{Fore.RED + _['msg'] + Style.RESET_ALL} "
+                        f"{Back.RED + _['loc'][1] + Style.RESET_ALL} where is:\n\n"
+                    )
+                    exception_header += "\n".join(
+                        [f'{Fore.CYAN + z + Style.RESET_ALL}: ({y})' for z, y in _['input'].items()]
+                    )
+                raise SystemExit(exception_header)
         return loaded
     return []
 
