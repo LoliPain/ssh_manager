@@ -1,9 +1,9 @@
 import os.path
 from json import load
 from typing import List, Union
-from typing_extensions import Never
 
 from pydantic import TypeAdapter
+from typing_extensions import Never
 
 from .store_path import store_path
 from ..connection import Connection, StoredElement
