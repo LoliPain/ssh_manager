@@ -22,6 +22,11 @@ def append_to_stored(connection: Connection) -> None:
 
 
 def remove_from_stored(stored_index: int) -> None:
+    """Removes existing stored connection by given index
+
+    :param stored_index: Index of record to be removed
+    :return: No.
+    """
     loaded = read_whole_store()
     with open(store_path, 'w+') as f:
         loaded.pop(stored_index)

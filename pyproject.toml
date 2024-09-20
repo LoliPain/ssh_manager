@@ -30,7 +30,7 @@
 
 [tool.poetry]
 name = "ssh-manager"
-version = "0.2.0a0"
+version = "0.2.0"
 description = "Keep all ssh connection next to you"
 repository = "https://github.com/LoliPain/ssh_manager"
 authors = ["LoliPain <p2love.loli@gmail.com>"]
@@ -55,7 +55,7 @@ types-setuptools = "*"
 check_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ["pydantic", "inquirerpy"]
+module = ["pydantic"]
 ignore_missing_imports = true
 
 [tool.poetry.scripts]

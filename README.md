@@ -20,19 +20,14 @@ optional arguments:
 ```
 
 
-## Deploying
-
-Normally it works only on UNIX-like systems due to envvars,
-sshpass and simple-term-menu OS support, but everything is possible...
-
 ## 1. Environment
+##### Since 0.2.0 ssh_manager works both on Windows and *NIX, thanks to [InquirerPy](https://github.com/kazhala/InquirerPy)
 
 - sshpass - Non-interactive ssh password authentication
 
-- Python 3 > 3.10
+- python >= 3.10
  
-- $servernickname_user - Environment variable stores the password
-	- Can be installed to .zshrc / .bashrc from special branch
+- $servernickname_user - Environment variable that stores the password
 
 ### Install dependencies
 
@@ -40,100 +35,69 @@ sshpass and simple-term-menu OS support, but everything is possible...
 
 - `sshpass -V` *(Verify sshpass installation)*
 
-`sudo apt install python3.10`
+- `python3 -V` *(Verify python installation, should be **greater than** 3.10)*
 
-- `python3.10 -V` *(Verify python installation)*
+#### Define environment variable
+```bash
+myserver_root=$(cat ~/SuperSecretPasswordForRoot)
 
-#### Install shell script
-
-`git clone -b shellscript https://github.com/LoliPain/ssh_manager`
-
-`cd ssh_manager`
-
-`python3 main.py`
-
-- Follow the steps in script
-
-	- Reload shell
-	(`source ~/.bashrc` **/** `source ~/.zshrc`)
-
- -----
-
-Now you can export passwords from specified folder using in your shell:
-```
-servernickname username
-
-> Exported username@servernickname password
-
+echo $myserver_root
+# Here goes the password
 ```
 
 ## 2. Installation
 
-- Clone the repo
-	
-```
-git clone https://github.com/LoliPain/ssh_manager
-```
-
-- Install it system-wide
-
-```
-cd ssh_manager
-
-python3 -m pip install .
-
-```
-
-- Remove the sources
-
-```
-cd ..
-
-rm -rf ssh_manager
+As simple as:
+```bash
+pip install git+https://github.com/LoliPain/ssh_manager@0.2.0
 ```
 
 ## 3. Usage
 
 - Remote selection:
+    - Simply run `ssh_m`
+        ```
+        > ssh_m
+        ssh_manager v0.2.0:
 
-```
-@ ssh_m
+        Select SSH user:
+        >me@some.example.com
+          milk@simplifymilk.local
 
- -----
-
-ssh_manager: 
-
-> sweety@lolipa.in
-  milk@simplifymilk.local
-```
-
+        ```
 - Add new remote 
+    - `ssh_m -n`
+    - Or press "n" key at `ssh_m` menu
+    ```
+    ssh_manager v0.2.0:
 
-```
-@ ssh_m -n
+     Hostname: google.com
+     Remote user: root
+     Environment variable suffix: mygoogle
 
- -----
+     -----
 
-ssh_manager: 
-
-Hostname (eg. google.com): simplifymilk.local
-Remote user: test
-Name of remote using for stored password (and env variable): simmilk
-
- -----
-
-> sweety@lolipa.in
-  milk@simplifymilk.local
-  test@simplifymilk.local
-
-```
+    > root@google.com
+      milk@simplifymilk.local
+      me@some.example.com
+    ```
+    Exampe configuration for new server `google.com`, with environment variable for it `$mygoogle_root`
+- Addional controls
+    - **[n]** key - Create new entry in list while in menu
+    - **[d]** key - Delete hovered entry
+    - **[q]** or **[Ctrl-C]** or **[Ctrl-D]** - Close ssh_manager
 
 ## Configuration
 
-As mentioned before ssh_manager aims to rename TMUX active window and close pane at session disconnect.
+The default storage is `JSON` file type, that placing in home location:
+`~/.ssh_manager-store`
+
+##### Remember, the storage contains **NO** any sensitive information. It just a mapping for environment variable. 
+
+Also, as mentioned before ssh_manager aims to rename TMUX active window and close pane at session disconnect.
 There's a few options how to configure that behavior:
 
-### Launch arguments
+#### Launch arguments
 
 `@ ssh_m -R` - *[**R**]ename - will prevent ssh_manager renaming active TMUX window*
 
@@ -143,10 +107,11 @@ There's a few options how to configure that behavior:
 
 - Is alternative to `$SSH_M_C` environment variable. Could be any value except empty
 
-## Important notes
+#### Important notes
 
 - Keep in mind that environment variable `$servernickname_user` is **REQUIRED**
 
 - ssh_manager by default is checking whether running inside TMUX, and applies those actions to it
 	- Renaming current window to active ssh session
 	- Termination shell on ssh disconnect
+

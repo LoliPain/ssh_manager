@@ -1,5 +1,6 @@
 import os
-from typing import Optional
+from enum import Enum
+from typing import Optional, Tuple
 
 from InquirerPy import inquirer, get_style
 from InquirerPy.base.control import Choice
@@ -15,6 +16,13 @@ def one_time_selection() -> Optional[Connection]:
 
     :return: Selected connection instance
     """
+    class _MenuAction(Enum):
+        """Enum representation os selected action in menu
+        """
+        Select = 0
+        New = 1
+        Delete = 2
+
     store = proceed_stored()
     menu = inquirer.select(
         message="Select SSH user:",
@@ -27,32 +35,36 @@ def one_time_selection() -> Optional[Connection]:
         raise_keyboard_interrupt=False,
         long_instruction="new: n, delete: d\nexit: C-c, q",
         keybindings={"skip": [{"key": "q"}, {"key": "c-c"}]},
-        choices=[Choice(value=('sel', i), name=str(_)) for i, _ in enumerate(store)],
+        choices=[Choice(value=(_MenuAction.Select, i), name=str(_)) for i, _ in enumerate(store)],
         style=get_style({"answermark": "#61afef"}, style_override=False)
     )
 
     @menu.register_kb("d")
     def _delete_entry(ctx):
-        ctx.app.exit(result=("del", menu.result_value[1]))
+        """Process "d" button as Delete action
+        """
+        ctx.app.exit(result=(_MenuAction.Delete, menu.result_value[1]))
 
     @menu.register_kb('n')
     def _new_entry(ctx):
-        ctx.app.exit(result=("new",))
+        """Process "n" button as New action
+        """
+        ctx.app.exit(result=(_MenuAction.New,))
 
-    selected: tuple = menu.execute()
+    selected: Optional[Tuple[_MenuAction, int]] = menu.execute()
     if not selected:
         raise SystemExit()  # Exit on 'skip' action
     match selected[0]:
-        case 'new':
+        case _MenuAction.New:
             append_to_stored(new_stored_entry())
             return None
-        case 'del':
+        case _MenuAction.Delete:
             if inquirer.confirm(message=f"Delete {store[selected[1]]}?").execute():
                 remove_from_stored(selected[1])
                 if selected[1] == 0:
                     raise SystemExit(f"{store[selected[1]]} was last entry")
             return None
-        case _:
+        case _MenuAction.Select:
             return store[selected[1]]
 
 
