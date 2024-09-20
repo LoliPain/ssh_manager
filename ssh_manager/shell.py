@@ -41,16 +41,23 @@ def new_stored_entry() -> Connection:
     :return: Recently created connection instance
     """
     def inquirer_wrapper_input(message: str, **kwargs):
+        """Pre-configured :inquirer.text with provided placeholder
+        Additional arguments would be passed as kwargs
+
+        :return: Answer to text input
+        """
         return inquirer.text(
             message=message,
             mandatory=True,
+            amark=pointer_code,
             validate=lambda self: len(self) > 0,
+            long_instruction="exit: C-c",
             **kwargs
         ).execute()
     return Connection(
-        hostname=inquirer_wrapper_input("Hostname (eg. google.com):"),
+        hostname=inquirer_wrapper_input("Hostname", instruction="(eg. google.com):"),
         remote_user=inquirer_wrapper_input("Remote user:"),
-        named_passwd=inquirer_wrapper_input("Environment variable suffix (eg. server in server_user):"),
+        named_passwd=inquirer_wrapper_input("Environment variable suffix", instruction="(eg. server in server_user):"),
     )
 
 
