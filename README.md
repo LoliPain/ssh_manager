@@ -90,7 +90,8 @@ pip install git+https://github.com/LoliPain/ssh_manager@0.2.0
 ## Configuration
 
 The default storage is `JSON` file type, that placing in home location:
-`~/.ssh_manager-store`
+
+`~/.ssh_manager_store`
 
 ##### Remember, the storage contains **NO** any sensitive information. It just a mapping for environment variable. 
 
