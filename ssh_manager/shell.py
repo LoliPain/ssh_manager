@@ -1,5 +1,4 @@
 import os
-import sys
 from typing import Optional
 
 from InquirerPy import inquirer, get_style
@@ -17,7 +16,7 @@ def one_time_selection() -> Optional[Connection]:
     :return: Selected connection instance
     """
     store = proceed_stored()
-    selected = inquirer.select(
+    menu = inquirer.select(
         message="Select SSH user:",
         qmark="",
         amark=POINTER_CODE,
@@ -32,23 +31,26 @@ def one_time_selection() -> Optional[Connection]:
         style=get_style({"answermark": "#61afef"}, style_override=False)
     )
 
-    @selected.register_kb("d")
+    @menu.register_kb("d")
     def _delete_entry(ctx):
-        ctx.app.exit(result=("del", selected.result_value[1]))
+        ctx.app.exit(result=("del", menu.result_value[1]))
 
-    @selected.register_kb('n')
+    @menu.register_kb('n')
     def _new_entry(ctx):
         ctx.app.exit(result=("new",))
 
-    selected = selected.execute()
+    selected: tuple = menu.execute()
     if not selected:
-        sys.exit(0)  # Exit on 'skip' action
+        raise SystemExit()  # Exit on 'skip' action
     match selected[0]:
         case 'new':
-            return append_to_stored(new_stored_entry())
+            append_to_stored(new_stored_entry())
+            return None
         case 'del':
             if inquirer.confirm(message=f"Delete {store[selected[1]]}?").execute():
-                return remove_from_stored(selected[1])
+                remove_from_stored(selected[1])
+                if selected[1] == 0:
+                    raise SystemExit(f"{store[selected[1]]} was last entry")
             return None
         case _:
             return store[selected[1]]
@@ -59,7 +61,8 @@ def new_stored_entry() -> Connection:
 
     :return: Recently created connection instance
     """
-    def inquirer_wrapper_input(message: str, **kwargs):
+
+    def _inquirer_wrapper_input(message: str, **kwargs):
         """Pre-configured :inquirer.text with provided placeholder
         Additional arguments would be passed as kwargs
 
@@ -73,10 +76,11 @@ def new_stored_entry() -> Connection:
             long_instruction="exit: C-c",
             **kwargs
         ).execute()
+
     return Connection(
-        hostname=inquirer_wrapper_input("Hostname", instruction="(eg. google.com):"),
-        remote_user=inquirer_wrapper_input("Remote user:"),
-        named_passwd=inquirer_wrapper_input("Environment variable suffix", instruction="(eg. server in server_user):"),
+        hostname=_inquirer_wrapper_input("Hostname", instruction="(eg. google.com):"),
+        remote_user=_inquirer_wrapper_input("Remote user:"),
+        named_passwd=_inquirer_wrapper_input("Environment variable suffix", instruction="(eg. server in server_user):"),
     )
 
 
