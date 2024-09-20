@@ -17,7 +17,7 @@ def append_to_stored(connection: Connection) -> None:
     loaded = read_whole_store()
     with open(store_path, 'w+') as f:
         loaded.append(connection.to_model())
-        f.write(dumps(to_jsonable_python(loaded)))
+        f.write(dumps(to_jsonable_python(loaded), indent=2))
     return None
 
 

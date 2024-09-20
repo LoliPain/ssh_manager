@@ -10,7 +10,10 @@ def main():
     :return: No, lol.
     """
     print(f"ssh_manager v{get_distribution('ssh_manager').version}:\n")
-    routing(parse_mode().n)
+    try:
+        routing(parse_mode().n)
+    except KeyboardInterrupt:
+        raise SystemExit('\n')
 
 
 if __name__ == "__main__":
