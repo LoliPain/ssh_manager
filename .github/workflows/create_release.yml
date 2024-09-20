@@ -47,7 +47,7 @@ jobs:
       run: |
         gh release create \
           ${{ needs.build.outputs.tag }} *whl \
-          --title="${{ needs.build.outputs.title }}" \
+          --title="$v{{ needs.build.outputs.tag }} ${{ needs.build.outputs.title }}" \
           --repo="$GITHUB_REPOSITORY" \
           --generate-notes \
 
