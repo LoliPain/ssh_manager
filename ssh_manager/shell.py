@@ -40,10 +40,17 @@ def new_stored_entry() -> Connection:
 
     :return: Recently created connection instance
     """
+    def inquirer_wrapper_input(message: str, **kwargs):
+        return inquirer.text(
+            message=message,
+            mandatory=True,
+            validate=lambda self: len(self) > 0,
+            **kwargs
+        ).execute()
     return Connection(
-        hostname=input("Hostname (eg. google.com): "),
-        remote_user=input("Remote user: "),
-        named_passwd=input("Name of remote using for stored password (and env variable): "),
+        hostname=inquirer_wrapper_input("Hostname (eg. google.com):"),
+        remote_user=inquirer_wrapper_input("Remote user:"),
+        named_passwd=inquirer_wrapper_input("Environment variable suffix (eg. server in server_user):"),
     )
 
 
