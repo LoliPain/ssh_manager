@@ -18,4 +18,12 @@ def append_to_stored(connection: Connection) -> None:
     with open(store_path, 'w+') as f:
         loaded.append(connection.to_model())
         f.write(dumps(to_jsonable_python(loaded)))
-    return
+    return None
+
+
+def remove_from_stored(stored_index: int) -> None:
+    loaded = read_whole_store()
+    with open(store_path, 'w+') as f:
+        loaded.pop(stored_index)
+        f.write(dumps(to_jsonable_python(loaded)))
+    return None
