@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class StoredConnection(BaseModel):
@@ -8,6 +8,13 @@ class StoredConnection(BaseModel):
     hostname: str
     remote_user: str
     named_passwd: str
+
+    @field_validator('*')
+    @classmethod
+    def prohibit_blank_string(cls, _):
+        if len(_) != 0:
+            return _
+        raise ValueError
 
 
 class Connection:
