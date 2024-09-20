@@ -39,9 +39,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-simple-term-menu = "1.6.1"
 colorama = "0.4.6"
 pydantic = "^2.9.2"
+inquirerpy = "^0.3.4"
 
 [tool.poetry.group.checks]
 optional = true
@@ -49,12 +49,13 @@ optional = true
 [tool.poetry.group.checks.dependencies]
 mypy = "*"
 types-colorama = "^0.4.15.20240311"
+types-setuptools = "*"
 
 [tool.mypy]
 check_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ["simple_term_menu", "pydantic"]
+module = ["pydantic", "inquirerpy"]
 ignore_missing_imports = true
 
 [tool.poetry.scripts]
