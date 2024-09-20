@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class StoredConnection(BaseModel):
@@ -8,6 +8,15 @@ class StoredConnection(BaseModel):
     hostname: str
     remote_user: str
     named_passwd: str
+
+    @field_validator('*')
+    @classmethod
+    def prohibit_blank_string(cls, _):
+        """Stricter validation for models, that prohibits empty strings
+        """
+        if len(_) != 0:
+            return _
+        raise ValueError
 
 
 class Connection:
@@ -50,9 +59,9 @@ class Connection:
         return f"sshpass -p ${self.env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
     def to_model(self) -> StoredConnection:
-        """Prepare instance for JSON dumping
+        """Validate instance using :StoredConnection model
 
-        :return: JSON-compatible dict
+        :return: :StoredConnection model instance
         """
         return StoredConnection.model_validate({
             "hostname": self.hostname,

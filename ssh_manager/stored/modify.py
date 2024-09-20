@@ -17,5 +17,18 @@ def append_to_stored(connection: Connection) -> None:
     loaded = read_whole_store()
     with open(store_path, 'w+') as f:
         loaded.append(connection.to_model())
-        f.write(dumps(to_jsonable_python(loaded)))
-    return
+        f.write(dumps(to_jsonable_python(loaded), indent=2))
+    return None
+
+
+def remove_from_stored(stored_index: int) -> None:
+    """Removes existing stored connection by given index
+
+    :param stored_index: Index of record to be removed
+    :return: No.
+    """
+    loaded = read_whole_store()
+    with open(store_path, 'w+') as f:
+        loaded.pop(stored_index)
+        f.write(dumps(to_jsonable_python(loaded), indent=2))
+    return None

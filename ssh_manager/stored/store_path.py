@@ -1,3 +1,3 @@
 from pathlib import Path
 
-store_path = f'{Path(__file__).parent.resolve()}/cxs.json'  # Path to storage file
+store_path = f'{Path.home().resolve() / ".ssh_manager_store"}'  # Path to storage file
