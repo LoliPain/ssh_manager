@@ -9,7 +9,7 @@ def main():
 
     :return: No, lol.
     """
-    print(f"ssh_manager v{get_distribution('ssh_manager').version}:")
+    print(f"ssh_manager v{get_distribution('ssh_manager').version}:\n")
     routing(parse_mode().n)
 
 

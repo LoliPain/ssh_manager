@@ -1,8 +1,9 @@
 import os
 import sys
 
-from InquirerPy import inquirer
+from InquirerPy import inquirer, get_style
 from InquirerPy.base.control import Choice
+from InquirerPy.enum import INQUIRERPY_POINTER_SEQUENCE as pointer_code
 
 from .connection import Connection
 from .stored import proceed_stored
@@ -17,11 +18,17 @@ def one_time_selection() -> Connection:
     store = proceed_stored()
     selected = inquirer.select(
         message="Select SSH user:",
+        qmark="",
+        amark=pointer_code,
+        cycle=True,
         vi_mode=True,
+        mandatory=False,
         show_cursor=False,
-        choices=[Choice(value=i, name=str(_)) for i, _ in enumerate(store)],
+        raise_keyboard_interrupt=False,
+        long_instruction="exit: C-c, q",
         keybindings={"skip": [{"key": "q"}, {"key": "c-c"}]},
-        mandatory=False
+        choices=[Choice(value=i, name=str(_)) for i, _ in enumerate(store)],
+        style=get_style({"answermark": "#61afef"}, style_override=False)
     ).execute()
     if selected is None:
         sys.exit(0)  # Exit on 'q' press
