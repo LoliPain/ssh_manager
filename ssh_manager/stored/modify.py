@@ -25,5 +25,5 @@ def remove_from_stored(stored_index: int) -> None:
     loaded = read_whole_store()
     with open(store_path, 'w+') as f:
         loaded.pop(stored_index)
-        f.write(dumps(to_jsonable_python(loaded)))
+        f.write(dumps(to_jsonable_python(loaded), indent=2))
     return None
