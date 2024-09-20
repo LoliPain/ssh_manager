@@ -47,7 +47,9 @@ def one_time_selection() -> Optional[Connection]:
         case 'new':
             return append_to_stored(new_stored_entry())
         case 'del':
-            return remove_from_stored(selected[1])
+            if inquirer.confirm(message=f"Delete {store[selected[1]]}?").execute():
+                return remove_from_stored(selected[1])
+            return None
         case _:
             return store[selected[1]]
 
