@@ -1,6 +1,9 @@
 import os
 import sys
 
+from InquirerPy import inquirer
+from InquirerPy.base.control import Choice
+
 from .connection import Connection
 from .stored import proceed_stored
 from .tmux import run_in_tmux
@@ -12,8 +15,14 @@ def one_time_selection() -> Connection:
     :return: Selected connection instance
     """
     store = proceed_stored()
-    # selected = TerminalMenu([str(_) for _ in store]).show()
-    selected = None
+    selected = inquirer.select(
+        message="Select SSH user:",
+        vi_mode=True,
+        show_cursor=False,
+        choices=[Choice(value=i, name=str(_)) for i, _ in enumerate(store)],
+        keybindings={"skip": [{"key": "q"}, {"key": "c-c"}]},
+        mandatory=False
+    ).execute()
     if selected is None:
         sys.exit(0)  # Exit on 'q' press
     return store[selected]
