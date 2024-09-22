@@ -32,6 +32,21 @@
 name = "ssh-manager"
 version = "0.2.0"
 description = "Keep all ssh connection next to you"
+classifiers = [
+    "Environment :: Console",
+    "Programming Language :: Python",
+    "Topic :: System :: Networking",
+    "Topic :: System :: Systems Administration",
+    "Typing :: Typed",
+    "License :: OSI Approved :: MIT License",
+]
+keywords = [
+    "ssh-manager",
+    "ssh_m",
+    "ssh",
+    "connection-storage",
+    "ssh-cli-storage",
+]
 repository = "https://github.com/LoliPain/ssh_manager"
 authors = ["LoliPain <p2love.loli@gmail.com>"]
 license = "MIT license"
@@ -64,4 +79,3 @@ ssh_m = "ssh_manager.main:main"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
