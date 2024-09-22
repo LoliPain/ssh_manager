@@ -15,3 +15,5 @@ def run_in_tmux(connection: Connection) -> None:
     os.system(connection.sshpass())
     if not parse_mode_env(ActionMode.NO_CLOSE):
         os.system("kill -9 %d" % (os.getppid()))  # Dirty hack from Foo Bah to close tty after ssh ends
+    if not parse_mode_env(ActionMode.NO_RENAME):
+        os.system("tmux set automatic-rename on")
