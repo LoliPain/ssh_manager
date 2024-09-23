@@ -53,7 +53,7 @@ license = "MIT license"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 colorama = "0.4.6"
 pydantic = "^2.9.2"
 inquirerpy = "^0.3.4"
