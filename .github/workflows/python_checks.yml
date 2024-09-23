@@ -1,6 +1,11 @@
 name: Python checks
 
-on: workflow_call
+on: 
+  workflow_call:
+    secrets:
+      RUN_PY_TOKEN:
+        description: 'A token passed from the caller workflow'
+        required: true
 
 jobs:
   check_mypy:
@@ -17,9 +22,11 @@ jobs:
     name: Minimal python is up-to-date
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ secrets.run_py_token }}
+      GH_TOKEN: ${{ secrets.RUN_PY_TOKEN }}
     steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref || github.ref_name }}
     - uses: ./.github/actions/setup_environment
       with:
         python-version: ${{ vars.PYTHON }}
