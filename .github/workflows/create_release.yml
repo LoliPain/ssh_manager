@@ -41,6 +41,7 @@ jobs:
       url: "https://pypi.org/p/ssh_m"
     permissions:
       id-token: write
+      contents: write
     steps:
     - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
