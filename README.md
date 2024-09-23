@@ -3,7 +3,7 @@
 
 
 ![Master Status](https://img.shields.io/github/check-runs/LoliPain/ssh_manager/master?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPg0KPHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxwYXRoIGQ9Ik0wLjc5MjcyNSAxMi4yOTI5TDUuMDg1NjIgOC4wMDAwMkwwLjc5MjcyNSAzLjcwNzEyTDIuMjA2OTQgMi4yOTI5MUw3LjkxNDA1IDguMDAwMDJMMi4yMDY5NCAxMy43MDcxTDAuNzkyNzI1IDEyLjI5MjlaIiBmaWxsPSIjMDAwMDAwIi8%2BDQo8cGF0aCBkPSJNNy4wMDAwNiAxNUgxNS4wMDAxVjEzSDcuMDAwMDZWMTVaIiBmaWxsPSIjMDAwMDAwIi8%2BDQo8L3N2Zz4%3D&label=MASTER)
-![PyPI - Version](https://img.shields.io/pypi/v/ssh_m?style=for-the-badge)
+![PyPI - Version](https://img.shields.io/pypi/v/ssh_m.py?style=for-the-badge)
 
 <p align="center">
     <img style="max-width: 100%" src=".github/static/preview.png">
@@ -52,7 +52,7 @@ echo $myserver_root
 
 As simple as:
 ```bash
-pip install ssh_m
+pip install ssh-m.py
 ```
 
 ## 3. Usage
