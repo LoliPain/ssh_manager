@@ -23,9 +23,6 @@ class Connection:
     """Basic stored connection
 
     """
-    hostname: str
-    remote_user: str
-    named_passwd: str
 
     def __init__(
             self,
