@@ -50,8 +50,8 @@ jobs:
         if [[ $VERMIN != $PYPI_VER ]]; then
         ./toml set pyproject.toml tool.poetry.dependencies.python "^$VERMIN" > new.pyproject.toml;
         mv new.pyproject.toml pyproject.toml;
-        git config --global user.email "nonexistent@email.git"
-        git config --global user.name "GitHubActions run_py"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
         git add -- pyproject.toml;
         git commit -m "check_vermin proposed version";
         git push;
