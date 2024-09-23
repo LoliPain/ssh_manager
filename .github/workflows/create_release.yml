@@ -55,9 +55,10 @@ jobs:
           --title="v${{ needs.build.outputs.tag }} ${{ needs.build.outputs.title }}" \
           --repo="$GITHUB_REPOSITORY" \
           --generate-notes \
+    - run: mkdir wheels && mv *whl wheels/
     - uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verbose: true
-        packages-dir: './'
+        packages-dir: './wheels'
         attestations: true
 

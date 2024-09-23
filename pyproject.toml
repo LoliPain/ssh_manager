@@ -51,7 +51,7 @@ keywords = [
     "ssh-cli-storage",
 ]
 repository = "https://github.com/LoliPain/ssh_manager"
-authors = ["LoliPain <p2love.loli@gmail.com>"]
+authors = ["LoliPain <x@lolipa.in>"]
 license = "MIT license"
 readme = "README.md"
 
