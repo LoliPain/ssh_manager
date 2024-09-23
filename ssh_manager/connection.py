@@ -9,10 +9,10 @@ class StoredConnection(BaseModel):
     """
     hostname: str
     remote_user: str
-    named_passwd: str
-    key_file: str
+    named_passwd: Optional[str] = None
+    key_file: Optional[str] = None
 
-    @field_validator('hostname', 'remote_user')
+    @field_validator('*')
     @classmethod
     def prohibit_blank_string(cls, _):
         """Stricter validation for models, that prohibits empty required string strings
