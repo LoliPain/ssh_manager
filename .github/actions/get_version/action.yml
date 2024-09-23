@@ -15,6 +15,6 @@ runs:
     - id: get_meta
       shell: bash
       run: |
-        echo "TITLE=$( echo '${{ github.event.pull_request.title }}' | sed -r 's/^rc-(.+)$/ \1/' )" >> $GITHUB_OUTPUT
+        echo "TITLE=$( echo '${{ github.event.pull_request.title }}' | sed -r 's/^rc-(.+)$/\1/' )" >> $GITHUB_OUTPUT
         echo "TAG=$( poetry version -s )" >> $GITHUB_OUTPUT
 

@@ -17,7 +17,7 @@ jobs:
     name: Minimal python is up-to-date
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ secrets.run_py_token }}
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/setup_environment
@@ -32,17 +32,19 @@ jobs:
           echo "PYPI_VER=$(./toml get pyproject.toml tool.poetry.dependencies.python |
           sed 's/[^a-zA-Z0-9\.]//g')" >> $GITHUB_ENV
     - name: Check vermin against current version
-    - run: |
+      run: |
         echo "VERMIN=$(vermin --eval-annotations -f parsable -t=$PYPI_VER- ssh_manager |
         tail -1 | sed -r 's/^.*:(.*):.*$/\1/')" >> $GITHUB_ENV
     - name: Update repo and pypi version if needed
       run: |
-        if [ $VERMIN != $PYTHON ]; then
+        if [[ $VERMIN != $PYTHON ]]; then
         gh variable set PYTHON --body $VERMIN;
         fi
-        if [ $VERMIN != $PYPI_VER ]; then
+        if [[ $VERMIN != $PYPI_VER ]]; then
         ./toml set pyproject.toml tool.poetry.dependencies.python "^$VERMIN" > new.pyproject.toml;
         mv new.pyproject.toml pyproject.toml;
+        git config --global user.email "nonexistent@email.git"
+        git config --global user.name "GitHubActions run_py"
         git add -- pyproject.toml;
         git commit -m "check_vermin proposed version";
         git push;
