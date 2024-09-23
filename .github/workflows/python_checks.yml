@@ -13,4 +13,38 @@ jobs:
         python-version: ${{ vars.PYTHON }}
         aux-deps: "checks"
     - run: poetry run mypy -p ssh_manager
+  check_vermin:
+    name: Minimal python is up-to-date
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/setup_environment
+      with:
+        python-version: ${{ vars.PYTHON }}
+        aux-deps: "checks"
+    - name: Get version from pyproject.toml
+      run: |
+          wget -qO toml.tgz "https://github.com/gnprice/toml-cli/releases/download/v0.2.3/toml-0.2.3-x86_64-linux.tar.gz"
+          tar -xzf toml.tgz  --strip-components 1 --wildcards 'toml*/toml'
+          chmod +x toml
+          echo "PYPI_VER=$(./toml get pyproject.toml tool.poetry.dependencies.python |
+          sed 's/[^a-zA-Z0-9\.]//g')" >> $GITHUB_ENV
+    - name: Check vermin against current version
+    - run: |
+        echo "VERMIN=$(vermin --eval-annotations -f parsable -t=$PYPI_VER- ssh_manager |
+        tail -1 | sed -r 's/^.*:(.*):.*$/\1/')" >> $GITHUB_ENV
+    - name: Update repo and pypi version if needed
+      run: |
+        if [ $VERMIN != $PYTHON ]; then
+        gh variable set PYTHON --body $VERMIN;
+        fi
+        if [ $VERMIN != $PYPI_VER ]; then
+        ./toml set pyproject.toml tool.poetry.dependencies.python "^$VERMIN" > new.pyproject.toml;
+        mv new.pyproject.toml pyproject.toml;
+        git add -- pyproject.toml;
+        git commit -m "check_vermin proposed version";
+        git push;
+        fi
 
