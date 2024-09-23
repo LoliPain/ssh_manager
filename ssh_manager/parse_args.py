@@ -20,7 +20,7 @@ def parse_mode_env(action: ActionMode) -> bool:
     """
     match action:
         case ActionMode.NO_CLOSE:
-            return bool(parse_mode().C or os.environ.get("SSH_M_C"))
+            return bool(parse_mode().C or os.environ.get("SSH_M_C") or os.environ.get("SSH_M_PREVIEW_MODE"))
         case ActionMode.NO_RENAME:
             return bool(parse_mode().R or os.environ.get("SSH_M_R"))
     return False

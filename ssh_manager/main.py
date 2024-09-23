@@ -1,4 +1,5 @@
-from pkg_resources import get_distribution
+from os import environ
+from importlib.metadata import version
 
 from .parse_args import parse_mode
 from .routing import routing
@@ -9,7 +10,9 @@ def main():
 
     :return: No, lol.
     """
-    print(f"ssh_manager v{get_distribution('ssh_manager').version}:\n")
+    print(f"ssh_manager "
+          f"v{version('ssh_manager') if not environ.get('SSH_PREVIEW_MODE') else '0.x.y'}:\n"
+          )
     try:
         routing(parse_mode().n)
     except KeyboardInterrupt:

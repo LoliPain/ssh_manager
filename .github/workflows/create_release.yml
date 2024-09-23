@@ -37,6 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
+      name: pypi
+      url: "https://pypi.org/p/ssh_m"
+    permissions:
+      id-token: write
     steps:
     - uses: actions/checkout@v4
     - uses: actions/download-artifact@v4
@@ -50,4 +54,9 @@ jobs:
           --title="v${{ needs.build.outputs.tag }} ${{ needs.build.outputs.title }}" \
           --repo="$GITHUB_REPOSITORY" \
           --generate-notes \
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        verbose: true
+        packages-dir: './'
+        attestations: true
 

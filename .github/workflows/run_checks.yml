@@ -37,5 +37,7 @@ jobs:
   run_py:
     needs: checks_prepare
     if: needs.checks_prepare.outputs.python == 'true'
+    secrets:
+      RUN_PY_TOKEN: ${{ secrets.RUN_PY_TOKEN }}
     uses: ./.github/workflows/python_checks.yml
 
