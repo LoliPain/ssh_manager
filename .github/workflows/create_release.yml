@@ -38,7 +38,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       name: pypi
-      url: "https://pypi.org/p/ssh_m"
+      url: "https://pypi.org/p/ssh-m.py"
     permissions:
       id-token: write
       contents: write
