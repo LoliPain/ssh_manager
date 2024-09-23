@@ -50,6 +50,6 @@ jobs:
         if [[ $VERMIN != $PYPI_VER ]]; then
           ./toml set pyproject.toml tool.poetry.dependencies.python "^$VERMIN" > new.pyproject.toml;
           mv new.pyproject.toml pyproject.toml;
-          git add -- pyproject.toml && git commit -m "check_vermin proposed version" && git push;
+          git add -- pyproject.toml && git commit -m "check_vermin proposed python $VERMIN" && git push;
         fi
 
