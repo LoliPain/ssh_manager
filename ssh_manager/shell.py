@@ -61,7 +61,7 @@ def one_time_selection() -> Optional[Connection]:
         case _MenuAction.Delete:
             if inquirer.confirm(message=f"Delete {store[selected[1]]}?").execute():
                 remove_from_stored(selected[1])
-                if selected[1] == 0:
+                if len(store) == 1:
                     raise SystemExit(f"{store[selected[1]]} was last entry")
             return None
         case _MenuAction.Select:
