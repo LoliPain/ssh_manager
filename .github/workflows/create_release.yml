@@ -55,9 +55,6 @@ jobs:
           --title="v${{ needs.build.outputs.tag }} ${{ needs.build.outputs.title }}" \
           --repo="$GITHUB_REPOSITORY" \
           --generate-notes \
+    - run: mkdir dist && mv *whl dist/
     - uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        verbose: true
-        packages-dir: './'
-        attestations: true
 
