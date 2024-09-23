@@ -29,8 +29,8 @@
 #    ⣴⣿⣿⣿⣷⣶⣤⣤⣌⣙⣛⡻⠿⣿⣿⣿⣿⣿⡟⢛⣋⣉⣁⣈⡛⡿⣾⣿⣿⣿⣿⠟⣋⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇
 
 [tool.poetry]
-name = "ssh-manager"
-version = "0.2.0"
+name = "ssh_m"
+version = "0.2.1"
 description = "Keep all ssh connection next to you"
 classifiers = [
     "Environment :: Console",
