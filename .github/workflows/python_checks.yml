@@ -33,7 +33,7 @@ jobs:
           sed 's/[^a-zA-Z0-9\.]//g')" >> $GITHUB_ENV
     - name: Check vermin against current version
       run: |
-        echo "VERMIN=$(vermin --eval-annotations -f parsable -t=$PYPI_VER- ssh_manager |
+        echo "VERMIN=$(poetry run vermin --eval-annotations -f parsable -t=$PYPI_VER- ssh_manager |
         tail -1 | sed -r 's/^.*:(.*):.*$/\1/')" >> $GITHUB_ENV
     - name: Update repo and pypi version if needed
       run: |
