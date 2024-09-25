@@ -47,7 +47,7 @@ def one_time_selection() -> Optional[Connection]:
     def _new_entry(ctx):
         """Process "n" button as New action
         """
-        ctx.app.exit(result=(_MenuAction.New,))
+        ctx.app.exit(result=(_MenuAction.New, -1))
 
     selected: Tuple[_MenuAction, int] = menu.execute()
     match selected[0]:
