@@ -1,5 +1,6 @@
 import os
 from enum import Enum
+from pathlib import Path
 from typing import Optional, Tuple, Dict
 
 from InquirerPy import inquirer, get_style
@@ -103,12 +104,13 @@ def new_stored_entry() -> Connection:
                     instruction="(eg. server in server_user):"
                 )}
             case _ConnectionType.Key:
-                return {"key_file": inquirer.filepath(
+                key_file_relative = inquirer.filepath(
                     message="Enter path to key file",
                     validate=PathValidator(is_file=True, message="Input is not a file"),
                     only_files=True,
                     long_instruction="exit: C-c"
-                ).execute()}
+                ).execute()
+                return {"key_file": str(Path(key_file_relative).resolve())}
             case _:
                 raise RuntimeError("Selection error")
     return Connection(
