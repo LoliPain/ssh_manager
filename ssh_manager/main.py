@@ -11,7 +11,7 @@ def main():
     :return: No, lol.
     """
     print(f"ssh_manager "
-          f"v{version('ssh_m.py') if not environ.get('SSH_PREVIEW_MODE') else '0.x.y'}:\n"
+          f"v{version('ssh_m.py') if not environ.get('SSH_M_PREVIEW_MODE') else '0.x.y'}:\n"
           )
     try:
         routing(parse_mode().n)

@@ -26,7 +26,7 @@ optional arguments:
 
 
 ## 1. Environment
-##### Since 0.2.0 ssh_manager works both on Windows and *NIX, thanks to [InquirerPy](https://github.com/kazhala/InquirerPy)
+##### Since 0.2.0 ssh_manager works both on Windows and \*NIX, thanks to [InquirerPy](https://github.com/kazhala/InquirerPy)
 
 - sshpass - Non-interactive ssh password authentication
 
@@ -34,16 +34,46 @@ optional arguments:
 
 ### Install dependencies
 
+#### Debian-based:
 `sudo apt install sshpass`
 
-- `sshpass -V` *(Verify sshpass installation)*
+#### Homebrew:
+`brew install sshpass`
 
-- `python3 -V` *(Verify python installation, should be **greater than** 3.10)*
+#### Other \*NIX:
+**1. [Download .tar.gz source code](https://sourceforge.net/projects/sshpass/)**
 
-#### Define environment variable
+**2. Extract archive and enter directory:**
+`tar -xf sshpass*.tar.gz && rm sshpass*.tar.gz && cd sshpass*`
+
+**3. Run as following:**
+
+```bash
+./configure
+make
+sudo make install
+```
+###### Or install without sudo-access setting the `--prefix`
+
+#### Windows (experimental):
+**1. [Download sshpass-win32](https://github.com/xhcoding/sshpass-win32)**
+
+**2. [Optional] Check your PATH environment variable**
+- **[Win + R] ->** SystemPropertiesAdvanced.exe
+- Environment variables **-> Path ->** Edit
+
+**3. Drop sshpass.exe to one of present folder in Path**
+
+### Verify everything is installed properly
+
+- `sshpass -V`
+
+- `python3 -V` *(Verify, that the version meets requirements)*
+
+#### Define named_passwd environment variable
 ```bash
 myserver_root=$(cat ~/SuperSecretPasswordForRoot)
-
+     -----
 echo $myserver_root
 # Here goes the password
 ```

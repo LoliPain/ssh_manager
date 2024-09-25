@@ -29,12 +29,6 @@ def proceed_stored() -> Union[list, List[Connection]]:
     stored = []
     loaded = read_whole_store()
     for i in loaded:
-        stored.append(
-            Connection(
-                hostname=i.hostname,
-                remote_user=i.remote_user,
-                named_passwd=i.named_passwd
-            )
-        )
+        stored.append(Connection(**i.dict()))
 
     return stored

@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
+    environment:
       name: pypi
       url: "https://pypi.org/p/ssh-m.py"
     permissions:
