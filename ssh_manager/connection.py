@@ -1,3 +1,4 @@
+from os import environ
 from typing import Optional
 
 from pydantic import BaseModel, field_validator
@@ -57,7 +58,7 @@ class Connection:
         def _env_passwd() -> str:
             return f"{self.named_passwd}_{self.remote_user}"
 
-        if not _env_passwd():
+        if not environ.get(_env_passwd()):
             raise SystemExit(f"${_env_passwd()} is empty!")
         return f"sshpass -p ${_env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
