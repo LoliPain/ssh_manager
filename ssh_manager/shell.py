@@ -70,8 +70,8 @@ def new_stored_entry() -> Connection:
     :return: Recently created connection instance
     """
     class _ConnectionType(str, Enum):
-        Key = "SSH key"
         Environment = "Environment variable"
+        Key = "SSH key"
 
     def _inquirer_wrapper_input(message: str, **kwargs) -> str:
         """Pre-configured :inquirer.text with provided placeholder
@@ -109,6 +109,8 @@ def new_stored_entry() -> Connection:
                     only_files=True,
                     long_instruction="exit: C-c"
                 ).execute()}
+            case _:
+                raise RuntimeError("Selection error")
     return Connection(
         hostname=_inquirer_wrapper_input("Hostname", instruction="(eg. google.com):"),
         remote_user=_inquirer_wrapper_input("Remote user:"),
