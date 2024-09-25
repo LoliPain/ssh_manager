@@ -30,7 +30,7 @@
 
 [tool.poetry]
 name = "ssh_m.py"
-version = "0.3.0a1"
+version = "0.3.0"
 description = "Keep all ssh connection next to you"
 packages = [
     { include = "ssh_manager" },
