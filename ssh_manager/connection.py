@@ -73,6 +73,7 @@ class Connection:
             return self._sshpass()
         elif self.key_file:
             return self._sshkey()
+        raise RuntimeError("Internal selection error")
 
     def to_model(self) -> StoredConnection:
         """Validate instance using :StoredConnection model
