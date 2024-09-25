@@ -1,3 +1,4 @@
+from os import environ, name
 from typing import Optional
 
 from pydantic import BaseModel, field_validator
@@ -54,12 +55,22 @@ class Connection:
         self.key_file = key_file
 
     def _sshpass(self) -> str:
-        def _env_passwd() -> str:
-            return f"{self.named_passwd}_{self.remote_user}"
+        def _env_passwd(raw: bool = False) -> str:
+            _prefix, _suffix = '', ''
+            if not raw:
+                if name == 'nt':
+                    _prefix, _suffix = '%', '%'
+                else:
+                    _prefix = '$'
 
-        if not _env_passwd():
-            raise SystemExit(f"${_env_passwd()} is empty!")
-        return f"sshpass -p ${_env_passwd()} ssh {self.remote_user}@{self.hostname}"
+            return f"{_prefix}{self.named_passwd}_{self.remote_user}{_suffix}"
+
+        if not environ.get(_env_passwd(raw=True)):
+            # Currently in broken state while using tmux
+            # TODO: Colored print with empty return
+            # For now it causing tmux window stay renamed
+            raise SystemExit(f"{_env_passwd()} is empty!")
+        return f"sshpass -p {_env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
     def _sshkey(self) -> str:
         return f"ssh -i '{self.key_file}' {self.remote_user}@{self.hostname}"

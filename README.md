@@ -23,18 +23,30 @@ optional arguments:
   -R          Acts same as $SSH_M_R Prevents renaming TMUX window on SSH connection.
   -C          Acts same as $SSH_M_C Prevents closing of TMUX after SSH is disconnected.
 ```
+##### Since 0.2.0 ssh_manager works both on Windows and \*NIX, thanks to [InquirerPy](https://github.com/kazhala/InquirerPy)
 
 
 ## 1. Environment
-##### Since 0.2.0 ssh_manager works both on Windows and \*NIX, thanks to [InquirerPy](https://github.com/kazhala/InquirerPy)
 
-- sshpass - Non-interactive ssh password authentication
+##### General:
+- **python3** - *is an interpreted, interactive, object-oriented, open-source programming language.*
+- **ssh** - *OpenSSH-compatible client*
+------
+##### Password connections:
+- **sshpass** - *Non-interactive ssh password authentication*
+- Define user-specific environment variable
+    ```bash
+    myserver_root=$(cat ~/SuperSecretPasswordForRoot)
+    ```
+------
+##### SSH-key connections:
+- **IdentityFile** - *Private key for remote machine, could be placed anywhere*
 
-- $servernickname_user - Environment variable that stores the password
 
-### Install dependencies
+## 2. Install dependencies 
+##### (Optional, required for pasword-based SSH connections)
 
-#### Debian-based:
+#### Using APT:
 `sudo apt install sshpass`
 
 #### Homebrew:
@@ -59,39 +71,37 @@ sudo make install
 **1. [Download sshpass-win32](https://github.com/xhcoding/sshpass-win32)**
 
 **2. [Optional] Check your PATH environment variable**
-- **[Win + R] ->** SystemPropertiesAdvanced.exe
+- **[Win + R] ->** `SystemPropertiesAdvanced.exe`
 - Environment variables **-> Path ->** Edit
 
 **3. Drop sshpass.exe to one of present folder in Path**
 
+
 ### Verify everything is installed properly
 
-- `sshpass -V`
+- `sshpass -V` *(Check, that sshpass is installed and operable)*
 
-- `python3 -V` *(Verify, that the version meets requirements)*
+-   ```
+    echo $myserver_root
+        -----
+    # Here goes the password
+    ```
 
-#### Define named_passwd environment variable
-```bash
-myserver_root=$(cat ~/SuperSecretPasswordForRoot)
-     -----
-echo $myserver_root
-# Here goes the password
-```
 
-## 2. Installation
+## 3. ssh_manager Installation
 
 As simple as:
 ```bash
 pip install ssh-m.py
 ```
 
-## 3. Usage
+## 4. Usage
 
 - Remote selection:
     - Simply run `ssh_m`
         ```
         > ssh_m
-        ssh_manager v0.2.0:
+        ssh_manager v0.x.y:
 
         Select SSH user:
         >me@some.example.com
@@ -102,10 +112,11 @@ pip install ssh-m.py
     - `ssh_m -n`
     - Or press "n" key at `ssh_m` menu
     ```
-    ssh_manager v0.2.0:
+    ssh_manager v0.x.y:
 
      Hostname: google.com
      Remote user: root
+     ? Select connection type: Env
      Environment variable suffix: mygoogle
 
      -----
@@ -126,7 +137,7 @@ The default storage is `JSON` file type, that placing in home location:
 
 `~/.ssh_manager_store`
 
-##### Remember, the storage contains **NO** any sensitive information. It just a mapping for environment variable. 
+##### Remember, the storage contains **NO** any sensitive information. It just a mapping for environment variable names and paths to key files. 
 
 Also, as mentioned before ssh_manager aims to rename TMUX active window and close pane at session disconnect.
 There's a few options how to configure that behavior:
@@ -134,16 +145,14 @@ There's a few options how to configure that behavior:
 #### Launch arguments
 
 `@ ssh_m -R` - *[**R**]ename - will prevent ssh_manager renaming active TMUX window*
-
-- Is alternative to `$SSH_M_R` environment variable. Could be any value except empty
+- Is alternative to `$SSH_M_R` environment variable.
 
 `@ ssh_m -C` - *[**C**]lose - will prevent ssh_manager closing pane after SSH terminated*
-
-- Is alternative to `$SSH_M_C` environment variable. Could be any value except empty
+- Is alternative to `$SSH_M_C`.
 
 #### Important notes
 
-- Keep in mind that environment variable `$servernickname_user` is **REQUIRED**
+- Keep in mind that for password-based logins environment variable `$servernickname_user` is **REQUIRED**, otherwise create key-based entry
 
 - ssh_manager by default is checking whether running inside TMUX, and applies those actions to it
 	- Renaming current window to active ssh session
