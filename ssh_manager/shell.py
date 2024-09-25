@@ -29,7 +29,6 @@ def one_time_selection() -> Optional[Connection]:
         message="Select SSH user:",
         qmark="",
         amark=POINTER_CODE,
-        cycle=True,
         vi_mode=True,
         show_cursor=False,
         long_instruction="new: n, delete: d\nexit: C-c, q",
@@ -74,7 +73,7 @@ def new_stored_entry() -> Connection:
         Key = "SSH key"
         Environment = "Environment variable"
 
-    def _inquirer_wrapper_input(message: str, **kwargs):
+    def _inquirer_wrapper_input(message: str, **kwargs) -> str:
         """Pre-configured :inquirer.text with provided placeholder
         Additional arguments would be passed as kwargs
 
@@ -83,7 +82,7 @@ def new_stored_entry() -> Connection:
         return inquirer.text(
             message=message,
             amark=POINTER_CODE,
-            validate=lambda self: len(self) > 0,
+            validate=lambda _: len(_) > 0,
             long_instruction="exit: C-c",
             **kwargs
         ).execute()
@@ -92,8 +91,8 @@ def new_stored_entry() -> Connection:
         select_auth_method = inquirer.select(
             message="Select connection type",
             vi_mode=True,
-            long_instruction="exit: C-c",
             show_cursor=False,
+            long_instruction="exit: C-c",
             transformer=lambda _: "Env" if _ == _ConnectionType.Environment else "Key",
             choices=[Choice(_, _.value) for _ in _ConnectionType]
         )
