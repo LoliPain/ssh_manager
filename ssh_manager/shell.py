@@ -1,10 +1,11 @@
 import os
 from enum import Enum
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 
 from InquirerPy import inquirer, get_style
 from InquirerPy.base.control import Choice
 from InquirerPy.enum import INQUIRERPY_POINTER_SEQUENCE as POINTER_CODE
+from InquirerPy.validator import PathValidator
 
 from .connection import Connection
 from .stored import proceed_stored, append_to_stored, remove_from_stored
@@ -73,6 +74,9 @@ def new_stored_entry() -> Connection:
 
     :return: Recently created connection instance
     """
+    class _ConnectionType(str, Enum):
+        Key = "SSH key"
+        Environment = "Environment variable"
 
     def _inquirer_wrapper_input(message: str, **kwargs):
         """Pre-configured :inquirer.text with provided placeholder
@@ -89,10 +93,32 @@ def new_stored_entry() -> Connection:
             **kwargs
         ).execute()
 
+    def _auth_method() -> Dict[str, str]:
+        select_auth_method = inquirer.select(
+            message="Select connection type",
+            vi_mode=True,
+            long_instruction="exit: C-c",
+            show_cursor=False,
+            transformer=lambda _: "Env" if _ == _ConnectionType.Environment else "Key",
+            choices=[Choice(_, _.value) for _ in _ConnectionType]
+        )
+        match select_auth_method.execute():
+            case _ConnectionType.Environment:
+                return {"named_passwd": _inquirer_wrapper_input(
+                    "Environment variable suffix",
+                    instruction="(eg. server in server_user):"
+                )}
+            case _ConnectionType.Key:
+                return {"key_file": inquirer.filepath(
+                    message="Enter path to key file",
+                    validate=PathValidator(is_file=True, message="Input is not a file"),
+                    only_files=True,
+                    long_instruction="exit: C-c"
+                ).execute()}
     return Connection(
         hostname=_inquirer_wrapper_input("Hostname", instruction="(eg. google.com):"),
         remote_user=_inquirer_wrapper_input("Remote user:"),
-        named_passwd=_inquirer_wrapper_input("Environment variable suffix", instruction="(eg. server in server_user):"),
+        **_auth_method()
     )
 
 
