@@ -53,19 +53,26 @@ class Connection:
         self.named_passwd = named_passwd
         self.key_file = key_file
 
-    def env_passwd(self) -> str:
-        """Return a specified env var for selected connection
+    def _sshpass(self) -> str:
+        def _env_passwd() -> str:
+            return f"{self.named_passwd}_{self.remote_user}"
 
-        :return: $server_user like variable
+        if not _env_passwd():
+            raise SystemExit(f"${_env_passwd()} is empty!")
+        return f"sshpass -p ${_env_passwd()} ssh {self.remote_user}@{self.hostname}"
+
+    def _sshkey(self) -> str:
+        return f"ssh -i '{self.key_file}' {self.remote_user}@{self.hostname}"
+
+    def connect_prompt(self) -> str:
+        """Connection type selection (sshpass/ssh key) for current instance
+
+        :return: Shell prompt to be executed
         """
-        return f"{self.named_passwd}_{self.remote_user}"
-
-    def sshpass(self) -> str:
-        """Returns a sshpass prepared action
-
-        :return: sshpass -p passwd ssh user@host
-        """
-        return f"sshpass -p ${self.env_passwd()} ssh {self.remote_user}@{self.hostname}"
+        if self.named_passwd:
+            return self._sshpass()
+        elif self.key_file:
+            return self._sshkey()
 
     def to_model(self) -> StoredConnection:
         """Validate instance using :StoredConnection model

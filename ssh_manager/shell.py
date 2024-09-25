@@ -129,10 +129,8 @@ def open_ssh() -> None:
     connection = one_time_selection()
     if not connection:
         return open_ssh()
-    if os.environ.get(connection.env_passwd()):
-        if os.environ.get("TMUX"):
-            run_in_tmux(connection)
-        else:
-            os.system(connection.sshpass())
+
+    if os.environ.get("TMUX"):
+        run_in_tmux(connection)
     else:
-        print(f"${connection.env_passwd()} is empty!")
+        os.system(connection.connect_prompt())
