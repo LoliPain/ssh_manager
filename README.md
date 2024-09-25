@@ -35,16 +35,21 @@ optional arguments:
 ##### Password connections:
 - **sshpass** - *Non-interactive ssh password authentication*
 - Define user-specific environment variable
-    ```bash
-    myserver_root=$(cat ~/SuperSecretPasswordForRoot)
-    ```
+    - Unix-like:
+        ```bash
+        myserver_root=$(cat ~/SuperSecretPasswordForRoot)
+        ```
+    - Windows:
+        ```bat
+        $env:myserver_root=$(cat ~/SuperSecretPasswordForRoot)
+        ```
 ------
 ##### SSH-key connections:
 - **IdentityFile** - *Private key for remote machine, could be placed anywhere*
 
 
 ## 2. Install dependencies 
-##### (Optional, required for pasword-based SSH connections)
+##### (Optional, required for password-based SSH connections)
 
 #### Using APT:
 `sudo apt install sshpass`
@@ -65,7 +70,7 @@ optional arguments:
 make
 sudo make install
 ```
-###### Or install without sudo-access setting the `--prefix`
+###### Or installation without sudo-access setting the `--prefix`
 
 #### Windows (experimental):
 **1. [Download sshpass-win32](https://github.com/xhcoding/sshpass-win32)**
@@ -117,7 +122,7 @@ pip install ssh-m.py
      Hostname: google.com
      Remote user: root
      ? Select connection type: Env
-     Environment variable suffix: mygoogle
+     Environment variable prefix: mygoogle
 
      -----
 
@@ -125,8 +130,8 @@ pip install ssh-m.py
       milk@simplifymilk.local
       me@some.example.com
     ```
-    Exampe configuration for new server `google.com`, with environment variable for it `$mygoogle_root`
-- Addional controls
+    Example configuration for new server `google.com`, with environment variable for it `$mygoogle_root`
+- Additional controls
     - **[n]** key - Create new entry in list while in menu
     - **[d]** key - Delete hovered entry
     - **[q]** or **[Ctrl-C]** or **[Ctrl-D]** - Close ssh_manager
@@ -152,9 +157,8 @@ There's a few options how to configure that behavior:
 
 #### Important notes
 
-- Keep in mind that for password-based logins environment variable `$servernickname_user` is **REQUIRED**, otherwise create key-based entry
+- Keep in mind that for password-based logins environment variable `$servernickname_user` is **REQUIRED**, otherwise use key-based entry
 
 - ssh_manager by default is checking whether running inside TMUX, and applies those actions to it
 	- Renaming current window to active ssh session
 	- Termination shell on ssh disconnect
-

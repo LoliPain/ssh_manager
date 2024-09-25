@@ -1,5 +1,5 @@
-from os import environ
 from importlib.metadata import version
+from os import environ
 
 from .parse_args import parse_mode
 from .routing import routing

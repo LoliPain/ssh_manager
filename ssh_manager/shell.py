@@ -18,6 +18,7 @@ def one_time_selection() -> Optional[Connection]:
 
     :return: Selected connection instance
     """
+
     class _MenuAction(Enum):
         """Enum representation os selected action in menu
         """
@@ -70,6 +71,7 @@ def new_stored_entry() -> Connection:
 
     :return: Recently created connection instance
     """
+
     class _ConnectionType(str, Enum):
         Environment = "Environment variable"
         Key = "SSH key"
@@ -100,7 +102,7 @@ def new_stored_entry() -> Connection:
         match select_auth_method.execute():
             case _ConnectionType.Environment:
                 return {"named_passwd": _inquirer_wrapper_input(
-                    "Environment variable suffix",
+                    "Environment variable prefix",
                     instruction="(eg. server in server_user):"
                 )}
             case _ConnectionType.Key:
@@ -113,6 +115,7 @@ def new_stored_entry() -> Connection:
                 return {"key_file": str(Path(key_file_relative).resolve())}
             case _:
                 raise RuntimeError("Selection error")
+
     return Connection(
         hostname=_inquirer_wrapper_input("Hostname", instruction="(eg. google.com):"),
         remote_user=_inquirer_wrapper_input("Remote user:"),
