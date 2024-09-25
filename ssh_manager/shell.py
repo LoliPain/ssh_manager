@@ -60,6 +60,7 @@ def one_time_selection() -> Optional[Connection]:
             if inquirer.confirm(message=f"Delete {store[selected[1]]}?").execute():
                 remove_from_stored(selected[1])
                 if len(store) == 1:
+                    # TODO: 0.3.1
                     raise SystemExit(f"{store[selected[1]]} was last entry")
             return None
         case _MenuAction.Select:
@@ -91,6 +92,7 @@ def new_stored_entry() -> Connection:
         ).execute()
 
     def _auth_method() -> Dict[str, str]:
+        # TODO: Refactor repeating code
         select_auth_method = inquirer.select(
             message="Select connection type",
             vi_mode=True,
@@ -114,6 +116,7 @@ def new_stored_entry() -> Connection:
                 ).execute()
                 return {"key_file": str(Path(key_file_relative).resolve())}
             case _:
+                # TODO: 0.3.1
                 raise RuntimeError("Selection error")
 
     return Connection(

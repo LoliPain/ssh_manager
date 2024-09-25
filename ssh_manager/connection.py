@@ -20,6 +20,7 @@ class StoredConnection(BaseModel):
         """
         if len(_) != 0:
             return _
+        # TODO: 0.3.1
         raise ValueError
 
 
@@ -50,6 +51,7 @@ class Connection:
         self.remote_user = remote_user
 
         if (not named_passwd and not key_file) or (named_passwd and key_file):
+            # TODO: 0.3.1
             raise Exception("Either named_passwd or key_file field are required")
         self.named_passwd = named_passwd
         self.key_file = key_file
@@ -84,6 +86,7 @@ class Connection:
             return self._sshpass()
         elif self.key_file:
             return self._sshkey()
+        # TODO: 0.3.1
         raise RuntimeError("Internal selection error")
 
     def to_model(self) -> StoredConnection:
