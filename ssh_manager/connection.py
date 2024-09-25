@@ -59,6 +59,9 @@ class Connection:
             return f"{self.named_passwd}_{self.remote_user}"
 
         if not environ.get(_env_passwd()):
+            # Currently in broken state while using tmux
+            # TODO: Colored print with empty return
+            # For now it causing tmux window stay renamed
             raise SystemExit(f"${_env_passwd()} is empty!")
         return f"sshpass -p ${_env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
