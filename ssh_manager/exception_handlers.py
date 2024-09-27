@@ -16,11 +16,14 @@ def handle_gracefully(e):
         formatted_text = [("", f"JSON decoding error at line {e.lineno} col {e.colno}"),
                           ("", "\n"), ("#ff0000 underline", e.msg)]
     elif isinstance(e, ValidationError):
-        ...
+        formatted_text = [("", f"Pydantic validate failed with:\n")]
+        for _ in e.errors():
+            formatted_text += [("","    "), ("#ff0000 underline", f"{_.get('msg')}{_.get('loc')}")]
+            formatted_text += [("#abb2bf", f" at {_.get('input')}\n")]
 
     formatted_text += [("", "\n\n"), ("#abb2bf", "Most likely this was caused by fact that you edited the storage")]
     print_formatted_text(FormattedText(formatted_text))
-    raise SystemExit
+    raise SystemExit(1)
 
 
 def format_exception(e) -> type[Exception]:
