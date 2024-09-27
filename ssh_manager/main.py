@@ -1,4 +1,5 @@
 from importlib.metadata import version
+from json import JSONDecodeError
 from os import environ
 
 from .runtime_exceptions import StorageProcessingError
@@ -17,9 +18,13 @@ def main():
           )
     try:
         routing(parse_mode().n)
-    except (KeyboardInterrupt,
-            StorageProcessingError) as e:
+    except (StorageProcessingError,
+            JSONDecodeError) as e:
         handle_gracefully(e)
+
+    except KeyboardInterrupt:
+        raise SystemExit(0)
+
     except Exception as e:
         raise format_exception(e)
 
