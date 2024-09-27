@@ -71,7 +71,9 @@ class Connection:
 
         if not environ.get(_env_passwd(raw=True)):
             # No aftermath TMUX rename is known issue https://github.com/LoliPain/ssh_manager/issues/38
-            raise StorageProcessingError(message=f"Empty environment variable", accent=f"{_env_passwd()}")
+            raise StorageProcessingError(message=f"Empty environment variable",
+                                         accent=f"{_env_passwd()}",
+                                         not_user_fault=True)
         return f"sshpass -p {_env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
     def _sshkey(self) -> str:

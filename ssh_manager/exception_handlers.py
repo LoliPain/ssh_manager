@@ -9,10 +9,13 @@ from .runtime_exceptions import StorageProcessingError
 
 def handle_gracefully(e):
     formatted_text = []
+    hide_post: bool = False
+
     if isinstance(e, StorageProcessingError):
         formatted_text = [("", e.ctx or "")]
         if type(e.accent) is str:
             formatted_text += [("", "\n"), ("#ff0000 underline", e.accent)]
+        hide_post = e.hide_post
     elif isinstance(e, JSONDecodeError):
         formatted_text = [("", f"JSON decoding error at line {e.lineno} col {e.colno}"),
                           ("", "\n"), ("#ff0000 underline", e.msg)]
@@ -22,7 +25,8 @@ def handle_gracefully(e):
             formatted_text += [("", "    "), ("#ff0000 underline", f"{_.get('msg')}{_.get('loc')}")]
             formatted_text += [("#abb2bf", f" at {_.get('input')}\n")]
 
-    formatted_text += [("", "\n\n"), ("#abb2bf", "Most likely this was caused by fact that you edited the storage")]
+    if not hide_post:
+        formatted_text += [("", "\n\n"), ("#abb2bf", "Most likely this was caused by fact that you edited the storage")]
     print_formatted_text(FormattedText(formatted_text))
     raise SystemExit(1)
 

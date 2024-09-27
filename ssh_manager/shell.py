@@ -62,7 +62,8 @@ def one_time_selection() -> Optional[Connection]:
                 remove_from_stored(selected[1])
                 if len(store) == 1:
                     raise StorageProcessingError(message="No more records left after",
-                                                 accent=f"{store[selected[1]]}")
+                                                 accent=f"{store[selected[1]]}",
+                                                 not_user_fault=True)
             return None
         case _MenuAction.Select:
             return store[selected[1]]

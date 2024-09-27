@@ -27,7 +27,13 @@ class StorageProcessingError(Exception):
     :accent List of prompt_toolkit colored tuples or plain str to be colored red
     """
 
-    def __init__(self, message: Optional[str] = None, accent: Optional[Union[tuple[str, str], str]] = None):
+    def __init__(
+            self,
+            message: Optional[str] = None,
+            accent: Optional[Union[tuple[str, str], str]] = None,
+            not_user_fault: bool = False,
+    ):
         self.ctx = message
         self.accent = accent
+        self.hide_post = not_user_fault
         super().__init__(self.ctx or self.accent)
