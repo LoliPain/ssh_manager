@@ -3,6 +3,8 @@ from typing import Optional
 
 from pydantic import BaseModel, field_validator
 
+from .runtime_exceptions import RuntimeProcessingError
+
 
 class StoredConnection(BaseModel):
     """Single element from store as python object
@@ -86,8 +88,10 @@ class Connection:
             return self._sshpass()
         elif self.key_file:
             return self._sshkey()
-        # TODO: 0.3.1
-        raise RuntimeError("Internal selection error")
+        raise RuntimeProcessingError("No named_passwd or key_file, but managed to connect_prompt",
+                                     f"self.named_passwd: {self.named_passwd}",
+                                     f"self.key_file: {self.key_file}",
+                                     self.__dict__)
 
     def to_model(self) -> StoredConnection:
         """Validate instance using :StoredConnection model

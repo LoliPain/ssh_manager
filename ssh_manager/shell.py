@@ -9,6 +9,7 @@ from InquirerPy.enum import INQUIRERPY_POINTER_SEQUENCE as POINTER_CODE
 from InquirerPy.validator import PathValidator
 
 from .connection import Connection
+from .runtime_exceptions import RuntimeProcessingError
 from .stored import proceed_stored, append_to_stored, remove_from_stored
 from .tmux import run_in_tmux
 
@@ -116,8 +117,8 @@ def new_stored_entry() -> Connection:
                 ).execute()
                 return {"key_file": str(Path(key_file_relative).resolve())}
             case _:
-                # TODO: 0.3.1
-                raise RuntimeError("Selection error")
+                raise RuntimeProcessingError("Selection error for new connection",
+                                             f"Chosen method was: {select_auth_method}")
 
     return Connection(
         hostname=_inquirer_wrapper_input("Hostname", instruction="(eg. google.com):"),
