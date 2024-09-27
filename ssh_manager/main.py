@@ -2,6 +2,8 @@ from importlib.metadata import version
 from json import JSONDecodeError
 from os import environ
 
+from pydantic_core import ValidationError
+
 from .runtime_exceptions import StorageProcessingError
 from .exception_handlers import handle_gracefully, format_exception
 from .parse_args import parse_mode
@@ -19,7 +21,8 @@ def main():
     try:
         routing(parse_mode().n)
     except (StorageProcessingError,
-            JSONDecodeError) as e:
+            JSONDecodeError,
+            ValidationError) as e:
         handle_gracefully(e)
 
     except KeyboardInterrupt:
