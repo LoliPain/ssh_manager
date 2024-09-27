@@ -100,8 +100,8 @@ def new_stored_entry() -> Connection:
             long_instruction="exit: C-c",
             transformer=lambda _: "Env" if _ == _ConnectionType.Environment else "Key",
             choices=[Choice(_, _.value) for _ in _ConnectionType]
-        )
-        match select_auth_method.execute():
+        ).execute()
+        match select_auth_method:
             case _ConnectionType.Environment:
                 return {"named_passwd": _inquirer_wrapper_input(
                     "Environment variable prefix",
