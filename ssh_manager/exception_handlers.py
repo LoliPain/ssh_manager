@@ -8,6 +8,7 @@ def handle_gracefully(e):
         formatted_text = [("", e.ctx or "")]
         if type(e.accent) is str:
             formatted_text += [("", "\n"), ("#ff0000 underline", e.accent)]
+        formatted_text += [("", "\n\n"), ("#abb2bf", "Most likely this was caused by fact that you edited the storage")]
         print_formatted_text(FormattedText(formatted_text))
     elif isinstance(e, KeyboardInterrupt):
         ...
