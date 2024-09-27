@@ -9,6 +9,7 @@ from InquirerPy.enum import INQUIRERPY_POINTER_SEQUENCE as POINTER_CODE
 from InquirerPy.validator import PathValidator
 
 from .connection import Connection
+from .runtime_exceptions import RuntimeProcessingError, StorageProcessingError
 from .stored import proceed_stored, append_to_stored, remove_from_stored
 from .tmux import run_in_tmux
 
@@ -60,7 +61,8 @@ def one_time_selection() -> Optional[Connection]:
             if inquirer.confirm(message=f"Delete {store[selected[1]]}?").execute():
                 remove_from_stored(selected[1])
                 if len(store) == 1:
-                    raise SystemExit(f"{store[selected[1]]} was last entry")
+                    raise StorageProcessingError(message="No more records left after",
+                                                 accent=f"{store[selected[1]]}")
             return None
         case _MenuAction.Select:
             return store[selected[1]]
@@ -91,6 +93,7 @@ def new_stored_entry() -> Connection:
         ).execute()
 
     def _auth_method() -> Dict[str, str]:
+        # TODO: Refactor repeating code
         select_auth_method = inquirer.select(
             message="Select connection type",
             vi_mode=True,
@@ -98,8 +101,8 @@ def new_stored_entry() -> Connection:
             long_instruction="exit: C-c",
             transformer=lambda _: "Env" if _ == _ConnectionType.Environment else "Key",
             choices=[Choice(_, _.value) for _ in _ConnectionType]
-        )
-        match select_auth_method.execute():
+        ).execute()
+        match select_auth_method:
             case _ConnectionType.Environment:
                 return {"named_passwd": _inquirer_wrapper_input(
                     "Environment variable prefix",
@@ -114,7 +117,8 @@ def new_stored_entry() -> Connection:
                 ).execute()
                 return {"key_file": str(Path(key_file_relative).resolve())}
             case _:
-                raise RuntimeError("Selection error")
+                raise RuntimeProcessingError("Selection error for new connection",
+                                             f"Chosen method was: {select_auth_method}")
 
     return Connection(
         hostname=_inquirer_wrapper_input("Hostname", instruction="(eg. google.com):"),

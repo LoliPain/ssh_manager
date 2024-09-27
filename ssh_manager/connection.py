@@ -3,6 +3,8 @@ from typing import Optional
 
 from pydantic import BaseModel, field_validator
 
+from .runtime_exceptions import RuntimeProcessingError, StorageProcessingError
+
 
 class StoredConnection(BaseModel):
     """Single element from store as python object
@@ -20,7 +22,8 @@ class StoredConnection(BaseModel):
         """
         if len(_) != 0:
             return _
-        raise ValueError
+        raise StorageProcessingError(message=f"JSON field validator:",
+                                     accent="Empty strings are prohibited for any value")
 
 
 class Connection:
@@ -50,7 +53,8 @@ class Connection:
         self.remote_user = remote_user
 
         if (not named_passwd and not key_file) or (named_passwd and key_file):
-            raise Exception("Either named_passwd or key_file field are required")
+            raise StorageProcessingError(message=f"Either named_passwd or key_file field are required for",
+                                         accent=f"{remote_user}@{hostname}")
         self.named_passwd = named_passwd
         self.key_file = key_file
 
@@ -66,10 +70,8 @@ class Connection:
             return f"{_prefix}{self.named_passwd}_{self.remote_user}{_suffix}"
 
         if not environ.get(_env_passwd(raw=True)):
-            # Currently in broken state while using tmux
-            # TODO: Colored print with empty return
-            # For now it causing tmux window stay renamed
-            raise SystemExit(f"{_env_passwd()} is empty!")
+            # No aftermath TMUX rename is known issue https://github.com/LoliPain/ssh_manager/issues/38
+            raise StorageProcessingError(message=f"Empty environment variable", accent=f"{_env_passwd()}")
         return f"sshpass -p {_env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
     def _sshkey(self) -> str:
@@ -84,7 +86,10 @@ class Connection:
             return self._sshpass()
         elif self.key_file:
             return self._sshkey()
-        raise RuntimeError("Internal selection error")
+        raise RuntimeProcessingError("No named_passwd or key_file, but managed to connect_prompt",
+                                     f"self.named_passwd: {self.named_passwd}",
+                                     f"self.key_file: {self.key_file}",
+                                     self.__dict__)
 
     def to_model(self) -> StoredConnection:
         """Validate instance using :StoredConnection model

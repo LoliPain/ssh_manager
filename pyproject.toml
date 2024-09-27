@@ -30,7 +30,7 @@
 
 [tool.poetry]
 name = "ssh_m.py"
-version = "0.3.0.post1"
+version = "0.3.1"
 description = "Keep all ssh connection next to you"
 packages = [
     { include = "ssh_manager" },
@@ -57,7 +57,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-colorama = "0.4.6"
 pydantic = "^2.9.2"
 inquirerpy = "^0.3.4"
 
@@ -66,7 +65,6 @@ optional = true
 
 [tool.poetry.group.checks.dependencies]
 mypy = "*"
-types-colorama = "^0.4.15.20240311"
 types-setuptools = "*"
 vermin = "^1.6.0"
 

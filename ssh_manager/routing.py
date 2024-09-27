@@ -1,3 +1,5 @@
+from prompt_toolkit import print_formatted_text
+
 from .shell import new_stored_entry, open_ssh
 from .stored import append_to_stored, proceed_stored
 
@@ -12,6 +14,6 @@ def routing(is_new: bool) -> None:
     if is_new:
         append_to_stored(new_stored_entry())
     elif not proceed_stored():
-        print("Storage is empty! Making an new connection\n")
+        print_formatted_text([("#abb2bf", "Storage is empty! Making an new connection\n")])
         append_to_stored(new_stored_entry())
     open_ssh()
