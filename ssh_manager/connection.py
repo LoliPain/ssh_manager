@@ -22,7 +22,8 @@ class StoredConnection(BaseModel):
         """
         if len(_) != 0:
             return _
-        raise StorageProcessingError(accent="Empty string are prohibited for any value")
+        raise StorageProcessingError(message=f"JSON field validator:",
+                                     accent="Empty strings are prohibited for any value")
 
 
 class Connection:

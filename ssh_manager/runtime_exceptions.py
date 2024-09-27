@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 
 class RuntimeProcessingError(Exception):
@@ -22,8 +22,10 @@ class RuntimeProcessingError(Exception):
 class StorageProcessingError(Exception):
     """Raised in cases when seemingly user modified storage between script usage
     Highlights the part that occurred problem as additional context in :accent arg
+
+    :accent List of prompt_toolkit colored tuples or plain str to be colored red
     """
-    def __init__(self, message: Optional[str] = None, accent: Optional[str] = None):
+    def __init__(self, message: Optional[str] = None, accent: Optional[Union[tuple[str, str], str]] = None):
         self.ctx = message
         self.accent = accent
         super().__init__(self.ctx or self.accent)
