@@ -8,6 +8,7 @@ class RuntimeProcessingError(Exception):
 
     Ends with link to GitHub Issues
     """
+
     def __init__(self, ctx: str, *args_ctx: Any):
         self.ctx = ctx
         for aux_ctx in args_ctx:
@@ -25,6 +26,7 @@ class StorageProcessingError(Exception):
 
     :accent List of prompt_toolkit colored tuples or plain str to be colored red
     """
+
     def __init__(self, message: Optional[str] = None, accent: Optional[Union[tuple[str, str], str]] = None):
         self.ctx = message
         self.accent = accent

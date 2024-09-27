@@ -1,9 +1,10 @@
 from json import JSONDecodeError
 
-from .runtime_exceptions import StorageProcessingError
 from prompt_toolkit import print_formatted_text
 from prompt_toolkit.formatted_text import FormattedText
 from pydantic_core import ValidationError
+
+from .runtime_exceptions import StorageProcessingError
 
 
 def handle_gracefully(e):
@@ -18,7 +19,7 @@ def handle_gracefully(e):
     elif isinstance(e, ValidationError):
         formatted_text = [("", f"Pydantic validate failed with:\n")]
         for _ in e.errors():
-            formatted_text += [("","    "), ("#ff0000 underline", f"{_.get('msg')}{_.get('loc')}")]
+            formatted_text += [("", "    "), ("#ff0000 underline", f"{_.get('msg')}{_.get('loc')}")]
             formatted_text += [("#abb2bf", f" at {_.get('input')}\n")]
 
     formatted_text += [("", "\n\n"), ("#abb2bf", "Most likely this was caused by fact that you edited the storage")]
