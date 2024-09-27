@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 
 class RuntimeProcessingError(Exception):
@@ -17,3 +17,13 @@ class RuntimeProcessingError(Exception):
                      "https://github.com/LoliPain/ssh_manager/issues/new?assignees=&labels=invalid&projects=&template"
                      "=report-an-invalid-or-unexpected-behavior.md&title=")
         super().__init__(self.ctx)
+
+
+class StorageProcessingError(Exception):
+    """Raised in cases when seemingly user modified storage between script usage
+    Highlights the part that occurred problem as additional context in :accent arg
+    """
+    def __init__(self, message: Optional[str] = None, accent: Optional[str] = None):
+        self.ctx = message
+        self.accent = accent
+        super().__init__(self.ctx or self.accent)

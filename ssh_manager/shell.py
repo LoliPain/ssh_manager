@@ -9,7 +9,7 @@ from InquirerPy.enum import INQUIRERPY_POINTER_SEQUENCE as POINTER_CODE
 from InquirerPy.validator import PathValidator
 
 from .connection import Connection
-from .runtime_exceptions import RuntimeProcessingError
+from .runtime_exceptions import RuntimeProcessingError, StorageProcessingError
 from .stored import proceed_stored, append_to_stored, remove_from_stored
 from .tmux import run_in_tmux
 
@@ -61,8 +61,8 @@ def one_time_selection() -> Optional[Connection]:
             if inquirer.confirm(message=f"Delete {store[selected[1]]}?").execute():
                 remove_from_stored(selected[1])
                 if len(store) == 1:
-                    # TODO: 0.3.1
-                    raise SystemExit(f"{store[selected[1]]} was last entry")
+                    raise StorageProcessingError(message="No more records left after",
+                                                 accent=f"{store[selected[1]]}")
             return None
         case _MenuAction.Select:
             return store[selected[1]]

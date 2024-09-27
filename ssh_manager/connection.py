@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, field_validator
 
-from .runtime_exceptions import RuntimeProcessingError
+from .runtime_exceptions import RuntimeProcessingError, StorageProcessingError
 
 
 class StoredConnection(BaseModel):
@@ -22,8 +22,7 @@ class StoredConnection(BaseModel):
         """
         if len(_) != 0:
             return _
-        # TODO: 0.3.1
-        raise ValueError
+        raise StorageProcessingError(accent="Empty string are prohibited for any value")
 
 
 class Connection:
@@ -53,8 +52,8 @@ class Connection:
         self.remote_user = remote_user
 
         if (not named_passwd and not key_file) or (named_passwd and key_file):
-            # TODO: 0.3.1
-            raise Exception("Either named_passwd or key_file field are required")
+            raise StorageProcessingError(message=f"Either named_passwd or key_file field are required for",
+                                         accent=f"{remote_user}@{hostname}")
         self.named_passwd = named_passwd
         self.key_file = key_file
 
@@ -70,10 +69,8 @@ class Connection:
             return f"{_prefix}{self.named_passwd}_{self.remote_user}{_suffix}"
 
         if not environ.get(_env_passwd(raw=True)):
-            # Currently in broken state while using tmux
-            # TODO: Colored print with empty return
-            # For now it causing tmux window stay renamed
-            raise SystemExit(f"{_env_passwd()} is empty!")
+            # No aftermath TMUX rename is known issue https://github.com/LoliPain/ssh_manager/issues/38
+            raise StorageProcessingError(message=f"Empty environment variable", accent=f"{_env_passwd()}")
         return f"sshpass -p {_env_passwd()} ssh {self.remote_user}@{self.hostname}"
 
     def _sshkey(self) -> str:
