@@ -1,4 +1,5 @@
 from os import environ, name
+from re import match
 from typing import Optional
 
 from pydantic import BaseModel, field_validator
@@ -49,8 +50,14 @@ class Connection:
         :param key_file: Stringified path to key file, mutually exclusive for named_passwd
                             (eg *chkitty* for $chkitty_sweety)
         """
-        self.hostname = hostname
+        self.hostname = self.raw_hostname = hostname
         self.remote_user = remote_user
+
+        with_port = match(r"(.+):(\d+)", self.hostname)
+        if with_port:
+            hostname = with_port.group(1)
+            port = with_port.group(2)
+            self.hostname = f"{hostname} -p {port}"
 
         if (not named_passwd and not key_file) or (named_passwd and key_file):
             raise StorageProcessingError(message=f"Either named_passwd or key_file field are required for",
@@ -99,7 +106,7 @@ class Connection:
         :return: :StoredConnection model instance
         """
         model_fields = {
-            "hostname": self.hostname,
+            "hostname": self.raw_hostname,
             "remote_user": self.remote_user,
         }
         if self.named_passwd:
@@ -113,4 +120,4 @@ class Connection:
 
         :return: user@host
         """
-        return f"{self.remote_user}@{self.hostname}"
+        return f"{self.remote_user}@{self.raw_hostname}"

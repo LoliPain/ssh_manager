@@ -159,6 +159,8 @@ There's a few options how to configure that behavior:
 
 - Keep in mind that for password-based logins environment variable `$servernickname_user` is **REQUIRED**, otherwise use key-based entry
 
+- You can specify any port for SSH using **`:`** delimeter after hostname, or specify explicitly **`-p`** flag
+
 - ssh_manager by default is checking whether running inside TMUX, and applies those actions to it
 	- Renaming current window to active ssh session
 	- Termination shell on ssh disconnect
