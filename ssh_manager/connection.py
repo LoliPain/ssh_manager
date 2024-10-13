@@ -1,4 +1,5 @@
 from os import environ, name
+from re import match
 from typing import Optional
 
 from pydantic import BaseModel, field_validator
@@ -51,6 +52,12 @@ class Connection:
         """
         self.hostname = hostname
         self.remote_user = remote_user
+
+        with_port = match(r"(.+):(\d+)", self.hostname)
+        if with_port:
+            hostname = with_port.group(1)
+            port = with_port.group(2)
+            self.hostname = f"{hostname} -p {port}"
 
         if (not named_passwd and not key_file) or (named_passwd and key_file):
             raise StorageProcessingError(message=f"Either named_passwd or key_file field are required for",
