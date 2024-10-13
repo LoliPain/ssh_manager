@@ -11,7 +11,7 @@ def run_in_tmux(connection: Connection) -> None:
     :param connection: `Connection` to be used in SSH session
     """
     if not parse_mode_env(ActionMode.NO_RENAME):
-        os.system(f"tmux rename-window '{connection.remote_user}@{connection.hostname}'")
+        os.system(f"tmux rename-window '{connection}'")
     os.system(connection.connect_prompt())
     if not parse_mode_env(ActionMode.NO_CLOSE):
         os.system("kill -9 %d" % (os.getppid()))  # Dirty hack from Foo Bah to close tty after ssh ends

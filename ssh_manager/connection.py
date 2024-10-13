@@ -50,7 +50,7 @@ class Connection:
         :param key_file: Stringified path to key file, mutually exclusive for named_passwd
                             (eg *chkitty* for $chkitty_sweety)
         """
-        self.hostname = hostname
+        self.hostname = self.raw_hostname = hostname
         self.remote_user = remote_user
 
         with_port = match(r"(.+):(\d+)", self.hostname)
@@ -120,4 +120,4 @@ class Connection:
 
         :return: user@host
         """
-        return f"{self.remote_user}@{self.hostname}"
+        return f"{self.remote_user}@{self.raw_hostname}"
