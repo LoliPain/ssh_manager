@@ -106,7 +106,7 @@ class Connection:
         :return: :StoredConnection model instance
         """
         model_fields = {
-            "hostname": self.hostname,
+            "hostname": self.raw_hostname,
             "remote_user": self.remote_user,
         }
         if self.named_passwd:
